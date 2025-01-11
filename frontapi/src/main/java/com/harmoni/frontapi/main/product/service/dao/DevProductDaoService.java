@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository("devProductDao")
-public class DevProductDataAccessService implements ProductDao {
+public class DevProductDaoService implements ProductDao {
 
     private static List<Product> DB = new ArrayList<>();
 
