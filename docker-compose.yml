@@ -1,6 +1,25 @@
 services:
-#TODO: add postgresql service
 #TODO: add frontapi service
+
+  postgres:
+    image: docker.io/postgres:latest
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_DB: frontapi
+      POSTGRES_USER: local
+      POSTGRES_PASSWORD: local
+    # NOTE: 
+    # we can use volume config to have a quick setup for the db migration, 
+    # since we dont have atm, i kept it commented
+    # volumes:
+    #   - ${LOCAL_WORKSPACE_FOLDER:-.}/.docker/postgres/migrations:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d postgres -U local"]
+      interval: 1s
+      timeout: 5s
+      retries: 5
+
   web:
     build: ./web
     container_name: harmoni-web-app
