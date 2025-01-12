@@ -4,12 +4,18 @@ import com.harmoni.frontapi.main.common.FrontApiGenericResponse;
 import com.harmoni.frontapi.main.common.ResponsePayload;
 import com.harmoni.frontapi.main.customer.service.CustomerService;
 import com.harmoni.frontapi.main.customer.service.model.Customer;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Tag(name = "Customer APIs", description = "This a group of apis handling customer")
 @RestController
+@RequestMapping(path = "/api/v1/customer")
 public class CustomerController {
 
     private final CustomerService customerService;
@@ -19,31 +25,36 @@ public class CustomerController {
         this.customerService = customerService;
     }
 
-    @PostMapping("/api/v1/addCustomer")
+    @PostMapping
+    @Operation(summary = "adds customer")
     public FrontApiGenericResponse<ResponsePayload.Empty> addCustomer(@RequestBody Customer customer) {
         return customerService.addCustomer(customer);
     }
 
-    @GetMapping("/api/v1/getCustomerById")
-    public FrontApiGenericResponse<Customer> getCustomerById(@RequestParam String id) {
+    @GetMapping("/{id}")
+    @Operation(summary = "gets customer by id", description = "gets customer by id passed on the path variable")
+    public FrontApiGenericResponse<Customer> getCustomerById(@PathVariable String id) {
         return customerService.getCustomerById(id);
     }
 
-    @GetMapping("/api/v1/getAllCustomers")
+    @GetMapping("/all")
+    @Operation(summary = "gets all customers")
     public FrontApiGenericResponse<List<Customer>> getAllCustomers() {
         return customerService.getAllCustomers();
     }
 
-    @PutMapping("/api/v1/updateCustomerById")
+    @PutMapping("/{id}")
+    @Operation(summary = "updates a customer by id", description = "updates a customer by id passed on the path variable")
     public FrontApiGenericResponse<ResponsePayload.Empty> updateCustomerById(
-            @RequestParam String id,
+            @PathVariable String id,
             @RequestBody Customer customer
     ) {
         return customerService.updateCustomerById(id, customer);
     }
 
-    @DeleteMapping("/api/v1/deleteCustomerById")
-    public FrontApiGenericResponse<ResponsePayload.Empty> deleteCustomerById(@RequestParam String id) {
+    @DeleteMapping("/{id}")
+    @Operation(summary = "deletes a customer by id", description = "deletes a customer by id passed on the path variable")
+    public FrontApiGenericResponse<ResponsePayload.Empty> deleteCustomerById(@PathVariable String id) {
         return customerService.deleteCustomerById(id);
     }
 }
