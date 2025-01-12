@@ -1,5 +1,7 @@
 package com.harmoni.frontapi.main.product.service;
 
+import com.harmoni.frontapi.main.common.FrontApiGenericResponse;
+import com.harmoni.frontapi.main.common.ResponsePayload;
 import com.harmoni.frontapi.main.product.service.dao.ProductDao;
 import com.harmoni.frontapi.main.product.service.model.Product;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,23 +19,26 @@ public class ProductService {
         this.productDao = productDao;
     }
 
-    public int addProduct(Product product) {
-        return productDao.insertProduct(product);
+    public FrontApiGenericResponse<ResponsePayload.Empty> addProduct(Product product) {
+        productDao.insertProduct(product);
+        return new FrontApiGenericResponse<>(new ResponsePayload.Empty());
     }
 
-    public List<Product> getAllProducts() {
-        return productDao.selectAllProducts();
+    public FrontApiGenericResponse<List<Product>> getAllProducts() {
+        return new FrontApiGenericResponse<>(productDao.getAllProducts());
     }
 
-    public Product getProductById(String id) {
-        return productDao.selectProductById(id);
+    public FrontApiGenericResponse<Product> getProductById(String id) {
+        return new FrontApiGenericResponse<>(productDao.getProductById(id));
     }
 
-    public int updateProductById(String id, Product product) {
-        return productDao.updateProductById(id, product);
+    public FrontApiGenericResponse<ResponsePayload.Empty> updateProductById(String id, Product product) {
+        productDao.updateProductById(id, product);
+        return new FrontApiGenericResponse<>(new ResponsePayload.Empty());
     }
 
-    public int deleteProductById(String id) {
-        return productDao.deleteProductById(id);
+    public FrontApiGenericResponse<ResponsePayload.Empty> deleteProductById(String id) {
+        productDao.deleteProductById(id);
+        return new FrontApiGenericResponse<>(new ResponsePayload.Empty());
     }
 }

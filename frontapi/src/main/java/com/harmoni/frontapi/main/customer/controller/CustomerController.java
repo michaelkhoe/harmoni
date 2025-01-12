@@ -1,5 +1,7 @@
 package com.harmoni.frontapi.main.customer.controller;
 
+import com.harmoni.frontapi.main.common.FrontApiGenericResponse;
+import com.harmoni.frontapi.main.common.ResponsePayload;
 import com.harmoni.frontapi.main.customer.service.CustomerService;
 import com.harmoni.frontapi.main.customer.service.model.Customer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,22 +20,22 @@ public class CustomerController {
     }
 
     @PostMapping("/api/v1/addCustomer")
-    public int addCustomer(@RequestBody Customer customer) {
+    public FrontApiGenericResponse<ResponsePayload.Empty> addCustomer(@RequestBody Customer customer) {
         return customerService.addCustomer(customer);
     }
 
     @GetMapping("/api/v1/getCustomerById")
-    public Customer getCustomerById(@RequestParam String id) {
+    public FrontApiGenericResponse<Customer> getCustomerById(@RequestParam String id) {
         return customerService.getCustomerById(id);
     }
 
     @GetMapping("/api/v1/getAllCustomers")
-    public List<Customer> getAllCustomers() {
+    public FrontApiGenericResponse<List<Customer>> getAllCustomers() {
         return customerService.getAllCustomers();
     }
 
     @PutMapping("/api/v1/updateCustomerById")
-    public int updateCustomerById(
+    public FrontApiGenericResponse<ResponsePayload.Empty> updateCustomerById(
             @RequestParam String id,
             @RequestBody Customer customer
     ) {
@@ -41,7 +43,7 @@ public class CustomerController {
     }
 
     @DeleteMapping("/api/v1/deleteCustomerById")
-    public int deleteCustomerById(@RequestParam String id) {
+    public FrontApiGenericResponse<ResponsePayload.Empty> deleteCustomerById(@RequestParam String id) {
         return customerService.deleteCustomerById(id);
     }
 }

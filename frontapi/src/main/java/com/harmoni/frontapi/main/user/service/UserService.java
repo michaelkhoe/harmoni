@@ -1,5 +1,7 @@
 package com.harmoni.frontapi.main.user.service;
 
+import com.harmoni.frontapi.main.common.FrontApiGenericResponse;
+import com.harmoni.frontapi.main.common.ResponsePayload;
 import com.harmoni.frontapi.main.user.service.dao.UserDao;
 import com.harmoni.frontapi.main.user.service.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,23 +19,26 @@ public class UserService {
         this.userDao = userDao;
     }
 
-    public int addUser(User user) {
-        return userDao.addUser(user);
+    public FrontApiGenericResponse<ResponsePayload.Empty> addUser(User user) {
+        userDao.addUser(user);
+        return new FrontApiGenericResponse<>(new ResponsePayload.Empty());
     }
 
-    public User getUserById(String id) {
-        return userDao.getUserById(id);
+    public FrontApiGenericResponse<User> getUserById(String id) {
+        return new FrontApiGenericResponse<>(userDao.getUserById(id));
     }
 
-    public int deleteUserById(String id) {
-        return userDao.deleteUserById(id);
+    public FrontApiGenericResponse<ResponsePayload.Empty> deleteUserById(String id) {
+        userDao.deleteUserById(id);
+        return new FrontApiGenericResponse<>(new ResponsePayload.Empty());
     }
 
-    public int updateUserById(String id, User user) {
-        return userDao.updateUserById(id, user);
+    public FrontApiGenericResponse<ResponsePayload.Empty> updateUserById(String id, User user) {
+        userDao.updateUserById(id, user);
+        return new FrontApiGenericResponse<>(new ResponsePayload.Empty());
     }
 
-    public List<User> getAllUsers() {
-        return userDao.getAllUsers();
+    public FrontApiGenericResponse<List<User>> getAllUsers() {
+        return new FrontApiGenericResponse<>(userDao.getAllUsers());
     }
 }
