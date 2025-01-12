@@ -1,0 +1,14 @@
+services:
+#TODO: add postgresql service
+#TODO: add frontapi service
+  web:
+    build: ./web
+    container_name: harmoni-web-app
+    ports:
+      - '5173:5173'
+    volumes:
+      - ./web:/app
+      - ./app/node_modules
+    stdin_open: true
+    tty: true  
+    restart: unless-stopped
