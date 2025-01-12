@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RequestMapping("/api/v1/product")
 @RestController
 public class ProductController {
 
@@ -19,13 +18,31 @@ public class ProductController {
         this.productService = productService;
     }
 
-    @PostMapping
-    public void addProduct(@NonNull @RequestBody Product product) {
-        productService.addProduct(product);
+    @PostMapping("/api/v1/addProduct")
+    public int addProduct(@NonNull @RequestBody Product product) {
+        return productService.addProduct(product);
     }
 
-    @GetMapping
+    @GetMapping("/api/v1/getAllProducts")
     public List<Product> getAllProduct() {
         return productService.getAllProducts();
+    }
+
+    @GetMapping("/api/v1/getProductById")
+    public Product getProductById(@RequestParam String id) {
+        return productService.getProductById(id);
+    }
+
+    @PutMapping("/api/v1/updateProductById")
+    public int updateProductById(
+            @RequestParam String id,
+            @NonNull @RequestBody Product product
+    ) {
+        return productService.updateProductById(id, product);
+    }
+
+    @DeleteMapping("/api/v1/deleteProductById")
+    public int deleteProductById(@RequestParam String id) {
+        return productService.deleteProductById(id);
     }
 }

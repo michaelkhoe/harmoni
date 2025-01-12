@@ -10,7 +10,7 @@ import java.util.List;
 @Repository("devUserDao")
 public class DevUserDaoService implements UserDao {
 
-    private static List<User> DB = new ArrayList<>();
+    private static final List<User> DB = new ArrayList<>();
 
     @Override
     public int addUser(String id, User user) {

@@ -24,4 +24,16 @@ public class ProductService {
     public List<Product> getAllProducts() {
         return productDao.selectAllProducts();
     }
+
+    public Product getProductById(String id) {
+        return productDao.selectProductById(id);
+    }
+
+    public int updateProductById(String id, Product product) {
+        return productDao.updateProductById(id, product);
+    }
+
+    public int deleteProductById(String id) {
+        return productDao.deleteProductById(id);
+    }
 }
