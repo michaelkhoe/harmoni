@@ -26,12 +26,12 @@ public class DevProductDaoService implements ProductDao {
     }
 
     @Override
-    public List<Product> selectAllProducts() {
+    public List<Product> getAllProducts() {
         return DB;
     }
 
     @Override
-    public Product selectProductById(String id) {
+    public Product getProductById(String id) {
         return DB.stream().filter(
                 product -> product.getId().equals(id)
         ).findFirst().orElse(null);
