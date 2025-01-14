@@ -1,5 +1,7 @@
 package com.harmoni.frontapi.main.customer.service;
 
+import com.harmoni.frontapi.main.common.FrontApiGenericResponse;
+import com.harmoni.frontapi.main.common.ResponsePayload;
 import com.harmoni.frontapi.main.customer.service.dao.CustomerDao;
 import com.harmoni.frontapi.main.customer.service.model.Customer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,23 +19,26 @@ public class CustomerService {
         this.customerDao = customerDao;
     }
 
-    public int addCustomer(Customer customer) {
-        return customerDao.addCustomer(customer);
+    public FrontApiGenericResponse<ResponsePayload.Empty> addCustomer(Customer customer) {
+        customerDao.addCustomer(customer);
+        return new FrontApiGenericResponse<>(new ResponsePayload.Empty());
     }
 
-    public Customer getCustomerById(String id) {
-        return customerDao.getCustomerById(id);
+    public FrontApiGenericResponse<Customer> getCustomerById(String id) {
+        return new FrontApiGenericResponse<>(customerDao.getCustomerById(id));
     }
 
-    public int deleteCustomerById(String id) {
-        return customerDao.deleteCustomerById(id);
+    public FrontApiGenericResponse<ResponsePayload.Empty> deleteCustomerById(String id) {
+        customerDao.deleteCustomerById(id);
+        return new FrontApiGenericResponse<>(new ResponsePayload.Empty());
     }
 
-    public int updateCustomerById(String id, Customer customer) {
-        return customerDao.updateCustomerById(id, customer);
+    public FrontApiGenericResponse<ResponsePayload.Empty> updateCustomerById(String id, Customer customer) {
+        customerDao.updateCustomerById(id, customer);
+        return new FrontApiGenericResponse<>(new ResponsePayload.Empty());
     }
 
-    public List<Customer> getAllCustomers() {
-        return customerDao.getAllCustomers();
+    public FrontApiGenericResponse<List<Customer>> getAllCustomers() {
+        return new FrontApiGenericResponse<>(customerDao.getAllCustomers());
     }
 }

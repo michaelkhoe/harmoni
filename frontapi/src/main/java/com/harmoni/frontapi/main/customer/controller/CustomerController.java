@@ -1,5 +1,7 @@
 package com.harmoni.frontapi.main.customer.controller;
 
+import com.harmoni.frontapi.main.common.FrontApiGenericResponse;
+import com.harmoni.frontapi.main.common.ResponsePayload;
 import com.harmoni.frontapi.main.customer.service.CustomerService;
 import com.harmoni.frontapi.main.customer.service.model.Customer;
 
@@ -25,33 +27,34 @@ public class CustomerController {
 
     @PostMapping
     @Operation(summary = "adds customer")
-    public int addCustomer(@RequestBody Customer customer) {
+    public FrontApiGenericResponse<ResponsePayload.Empty> addCustomer(@RequestBody Customer customer) {
         return customerService.addCustomer(customer);
     }
 
     @GetMapping("/{id}")
     @Operation(summary = "gets customer by id", description = "gets customer by id passed on the path variable")
-    public Customer getCustomerById(@PathVariable String id) {
+    public FrontApiGenericResponse<Customer> getCustomerById(@PathVariable String id) {
         return customerService.getCustomerById(id);
     }
 
     @GetMapping("/all")
     @Operation(summary = "gets all customers")
-    public List<Customer> getAllCustomers() {
+    public FrontApiGenericResponse<List<Customer>> getAllCustomers() {
         return customerService.getAllCustomers();
     }
 
     @PutMapping("/{id}")
     @Operation(summary = "updates a customer by id", description = "updates a customer by id passed on the path variable")
-    public int updateCustomerById(
+    public FrontApiGenericResponse<ResponsePayload.Empty> updateCustomerById(
             @PathVariable String id,
-            @RequestBody Customer customer) {
+            @RequestBody Customer customer
+    ) {
         return customerService.updateCustomerById(id, customer);
     }
 
     @DeleteMapping("/{id}")
     @Operation(summary = "deletes a customer by id", description = "deletes a customer by id passed on the path variable")
-    public int deleteCustomerById(@PathVariable String id) {
+    public FrontApiGenericResponse<ResponsePayload.Empty> deleteCustomerById(@PathVariable String id) {
         return customerService.deleteCustomerById(id);
     }
 }

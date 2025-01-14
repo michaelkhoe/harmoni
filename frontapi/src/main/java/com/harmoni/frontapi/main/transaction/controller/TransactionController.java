@@ -1,5 +1,7 @@
 package com.harmoni.frontapi.main.transaction.controller;
 
+import com.harmoni.frontapi.main.common.FrontApiGenericResponse;
+import com.harmoni.frontapi.main.common.ResponsePayload;
 import com.harmoni.frontapi.main.transaction.service.TransactionService;
 import com.harmoni.frontapi.main.transaction.service.model.Transaction;
 import io.swagger.v3.oas.annotations.Operation;
@@ -22,6 +24,18 @@ public class TransactionController {
         this.transactionService = transactionService;
     }
 
+    @PostMapping("/api/v1/executeTransaction")
+    public FrontApiGenericResponse<ResponsePayload.Empty> executeTransaction(@NonNull @RequestBody Transaction transaction) {
+        return transactionService.executeTransaction(transaction);
+    }
+
+    @GetMapping("/api/v1/getTransactionById")
+    public FrontApiGenericResponse<Transaction> getTransactionById(@RequestParam String id) {
+        return transactionService.getTransactionById(id);
+    }
+
+    @GetMapping("/api/v1/getAllTransactions")
+    public FrontApiGenericResponse<List<Transaction>> getAllTransactions() {
     @PostMapping("/execute")
     @Operation(summary = "Execute a transaction", description = "This api is used to execute a transaction")
     public int executeTransaction(@NonNull @RequestBody Transaction transaction) {
