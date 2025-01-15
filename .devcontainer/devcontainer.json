@@ -22,7 +22,7 @@
 		"--name=harmoni-workspace"
 	],
 	"remoteEnv": {
-		"LOCAL_WORKSPACE_FOLDER": "${localWorkspaceFolder}",
+		"LOCAL_WORKSPACE_FOLDER": "${localWorkspaceFolder}" // this will help us traverse the directory
 	}
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// "forwardPorts": [],
