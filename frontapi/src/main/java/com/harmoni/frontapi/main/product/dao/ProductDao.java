@@ -1,6 +1,6 @@
-package com.harmoni.frontapi.main.product.service.dao;
+package com.harmoni.frontapi.main.product.dao;
 
-import com.harmoni.frontapi.main.product.service.model.Product;
+import com.harmoni.frontapi.main.product.model.Product;
 
 import java.util.List;
 import java.util.UUID;

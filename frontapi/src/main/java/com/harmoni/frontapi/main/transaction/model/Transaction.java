@@ -1,6 +1,6 @@
-package com.harmoni.frontapi.main.transaction.service.model;
+package com.harmoni.frontapi.main.transaction.model;
 
-import com.harmoni.frontapi.main.customer.service.model.Customer;
+import com.harmoni.frontapi.main.customer.model.Customer;
 import lombok.*;
 
 import java.time.LocalDateTime;

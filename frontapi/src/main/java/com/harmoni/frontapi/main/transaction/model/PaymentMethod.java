@@ -1,4 +1,4 @@
-package com.harmoni.frontapi.main.transaction.service.model;
+package com.harmoni.frontapi.main.transaction.model;
 
 public enum PaymentMethod {
     CASH,

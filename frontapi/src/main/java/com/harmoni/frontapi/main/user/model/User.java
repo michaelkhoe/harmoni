@@ -1,4 +1,4 @@
-package com.harmoni.frontapi.main.user.service.model;
+package com.harmoni.frontapi.main.user.model;
 
 import lombok.*;
 

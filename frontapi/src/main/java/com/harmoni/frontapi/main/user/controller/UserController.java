@@ -3,7 +3,7 @@ package com.harmoni.frontapi.main.user.controller;
 import com.harmoni.frontapi.main.common.FrontApiGenericResponse;
 import com.harmoni.frontapi.main.common.ResponsePayload;
 import com.harmoni.frontapi.main.user.service.UserService;
-import com.harmoni.frontapi.main.user.service.model.User;
+import com.harmoni.frontapi.main.user.model.User;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.NonNull;
