@@ -3,7 +3,7 @@ package com.harmoni.frontapi.main.customer.controller;
 import com.harmoni.frontapi.main.common.FrontApiGenericResponse;
 import com.harmoni.frontapi.main.common.ResponsePayload;
 import com.harmoni.frontapi.main.customer.service.CustomerService;
-import com.harmoni.frontapi.main.customer.service.model.Customer;
+import com.harmoni.frontapi.main.customer.model.Customer;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

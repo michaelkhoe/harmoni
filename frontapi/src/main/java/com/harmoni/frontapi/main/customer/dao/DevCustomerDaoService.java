@@ -1,6 +1,6 @@
-package com.harmoni.frontapi.main.customer.service.dao;
+package com.harmoni.frontapi.main.customer.dao;
 
-import com.harmoni.frontapi.main.customer.service.model.Customer;
+import com.harmoni.frontapi.main.customer.model.Customer;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
