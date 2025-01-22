@@ -24,33 +24,21 @@ public class TransactionController {
         this.transactionService = transactionService;
     }
 
-    @PostMapping("/api/v1/executeTransaction")
-    public FrontApiGenericResponse<ResponsePayload.Empty> executeTransaction(@NonNull @RequestBody Transaction transaction) {
-        return transactionService.executeTransaction(transaction);
-    }
-
-    @GetMapping("/api/v1/getTransactionById")
-    public FrontApiGenericResponse<Transaction> getTransactionById(@RequestParam String id) {
-        return transactionService.getTransactionById(id);
-    }
-
-    @GetMapping("/api/v1/getAllTransactions")
-    public FrontApiGenericResponse<List<Transaction>> getAllTransactions() {
     @PostMapping("/execute")
     @Operation(summary = "Execute a transaction", description = "This api is used to execute a transaction")
-    public int executeTransaction(@NonNull @RequestBody Transaction transaction) {
+    public FrontApiGenericResponse<ResponsePayload.Empty> executeTransaction(@NonNull @RequestBody Transaction transaction) {
         return transactionService.executeTransaction(transaction);
     }
 
     @GetMapping("/{id}")
     @Operation(summary = "Get a transaction by id", description = "This api is used to get a transaction by id")
-    public Transaction getTransactionById(@PathVariable String id) {
+    public FrontApiGenericResponse<Transaction> getTransactionById(@PathVariable String id) {
         return transactionService.getTransactionById(id);
     }
 
     @GetMapping("/all")
     @Operation(summary = "Get all transactions", description = "This api is used to get all transactions")
-    public List<Transaction> getAllTransactions() {
+    public FrontApiGenericResponse<List<Transaction>> getAllTransactions() {
         return transactionService.getAllTransactions();
     }
 }
