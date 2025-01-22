@@ -3,7 +3,7 @@ package com.harmoni.frontapi.main.product.controller;
 import com.harmoni.frontapi.main.common.FrontApiGenericResponse;
 import com.harmoni.frontapi.main.common.ResponsePayload;
 import com.harmoni.frontapi.main.product.service.ProductService;
-import com.harmoni.frontapi.main.product.service.model.Product;
+import com.harmoni.frontapi.main.product.model.Product;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;

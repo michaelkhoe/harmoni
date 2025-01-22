@@ -1,6 +1,6 @@
 package com.harmoni.frontapi.main.transaction.service.model;
 
-import com.harmoni.frontapi.main.product.service.model.Product;
+import com.harmoni.frontapi.main.product.model.Product;
 import lombok.*;
 
 @AllArgsConstructor
