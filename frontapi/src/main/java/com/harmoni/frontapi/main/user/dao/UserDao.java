@@ -1,7 +1,7 @@
-package com.harmoni.frontapi.main.user.service.dao;
+package com.harmoni.frontapi.main.user.dao;
 
 
-import com.harmoni.frontapi.main.user.service.model.User;
+import com.harmoni.frontapi.main.user.model.User;
 import jakarta.annotation.Nullable;
 
 import java.util.List;

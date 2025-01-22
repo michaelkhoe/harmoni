@@ -2,8 +2,8 @@ package com.harmoni.frontapi.main.user.service;
 
 import com.harmoni.frontapi.main.common.FrontApiGenericResponse;
 import com.harmoni.frontapi.main.common.ResponsePayload;
-import com.harmoni.frontapi.main.user.service.dao.UserDao;
-import com.harmoni.frontapi.main.user.service.model.User;
+import com.harmoni.frontapi.main.user.dao.UserDao;
+import com.harmoni.frontapi.main.user.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
