@@ -1,6 +1,6 @@
-package com.harmoni.frontapi.main.transaction.service.dao;
+package com.harmoni.frontapi.main.transaction.dao;
 
-import com.harmoni.frontapi.main.transaction.service.model.Transaction;
+import com.harmoni.frontapi.main.transaction.model.Transaction;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;

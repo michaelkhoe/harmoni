@@ -3,7 +3,7 @@ package com.harmoni.frontapi.main.transaction.controller;
 import com.harmoni.frontapi.main.common.FrontApiGenericResponse;
 import com.harmoni.frontapi.main.common.ResponsePayload;
 import com.harmoni.frontapi.main.transaction.service.TransactionService;
-import com.harmoni.frontapi.main.transaction.service.model.Transaction;
+import com.harmoni.frontapi.main.transaction.model.Transaction;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;

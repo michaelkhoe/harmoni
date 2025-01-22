@@ -2,8 +2,8 @@ package com.harmoni.frontapi.main.transaction.service;
 
 import com.harmoni.frontapi.main.common.FrontApiGenericResponse;
 import com.harmoni.frontapi.main.common.ResponsePayload;
-import com.harmoni.frontapi.main.transaction.service.dao.TransactionDao;
-import com.harmoni.frontapi.main.transaction.service.model.Transaction;
+import com.harmoni.frontapi.main.transaction.dao.TransactionDao;
+import com.harmoni.frontapi.main.transaction.model.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
