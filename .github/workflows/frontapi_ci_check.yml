@@ -3,7 +3,7 @@ name: FrontAPI CI Check
 on:
     pull_request:
       paths:
-        - 'frontApi/**'
+        - 'frontapi/**'
       branches:
         - '*'
 
