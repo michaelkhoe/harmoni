@@ -2,8 +2,8 @@ name: CI Check
 
 on:
     pull_request:
-      paths:
-        - 'frontApi/**'
+      # paths:
+      #   - 'frontApi/**'
       branches:
         - '*'
 
