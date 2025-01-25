@@ -2,6 +2,10 @@ name: CI Check
 
 on:
     pull_request:
+      paths:
+        - 'frontApi/**'
+      branches:
+        - '*'
 
 jobs:
     run-test:
@@ -15,6 +19,9 @@ jobs:
           with:
             distribution: 'temurin'
             java-version: '21'
+
+        - name: Change Dir to FrontAPI Folder
+          run: cd frontApi
 
         - name: Build Project
           run: ./gradlew build
