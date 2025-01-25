@@ -1,0 +1,23 @@
+name: CI Check
+
+on:
+    pull_request:
+
+jobs:
+    run-test:
+        runs-on: ubuntu-latest
+        steps:
+        - name: Clone
+          uses: actions/checkout@v4
+
+        - name: Setup Java
+          uses: actions/setup-java@v4
+          with:
+            distribution: 'temurin'
+            java-version: '21'
+
+        - name: Build Project
+          run: ./gradlew build
+
+        - name: Run Tests
+          run: ./gradlew test
