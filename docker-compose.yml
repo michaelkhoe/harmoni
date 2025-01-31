@@ -31,3 +31,12 @@ services:
     stdin_open: true
     tty: true  
     restart: unless-stopped
+
+  mobile:
+    build:
+      context: ./mobile
+      dockerfile: Dockerfile
+    ports:
+      - '8081:8081'
+    volumes:
+      - ./mobile:/mobile_app

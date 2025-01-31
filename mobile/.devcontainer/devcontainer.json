@@ -1,0 +1,9 @@
+{
+	"name": "Harmoni mobile",
+	"image": "mcr.microsoft.com/devcontainers/typescript-node:20",
+	"features": {},
+	"mounts": ["source=node_modules_${devcontainerId},target=${containerWorkspaceFolder}/node_modules,type=volume"],
+	"remoteUser": "root",
+	"runArgs": ["-p=8081:8081", "--env-file", ".devcontainer/.env"],
+	"postCreateCommand": "yarn install"
+}

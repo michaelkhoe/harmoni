@@ -1,0 +1,19 @@
+FROM node:16-buster
+
+RUN apt-get update && apt-get install -y \
+    curl \
+    git \
+    watchman \
+    && apt-get clean
+
+RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
+    && echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list \
+    && apt-get update && apt-get install -y yarn
+
+RUN npm install -g react-native-cli
+
+WORKDIR /workspace
+
+EXPOSE 8081
+
+CMD ["npm", "start"]
