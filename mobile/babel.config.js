@@ -1,4 +1,5 @@
 module.exports = function(api) {
+
     api.cache(true);
 
     return {
@@ -11,7 +12,10 @@ module.exports = function(api) {
 
             alias: {
                 "@": "./",
-                "tailwind.config": "./tailwind.config.js"
+                "tailwind.config": "./tailwind.config.js",
+                "@unitools/image": "@unitools/image-expo",
+                "@unitools/router": "@unitools/router-expo",
+                "@unitools/link": "@unitools/link-expo",
             }
         }]]
     };
