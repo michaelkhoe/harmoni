@@ -31,6 +31,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AlertTriangle } from "lucide-react-native";
 import { useRouter } from "@unitools/router";
+import { midnightBlue, white } from "@/constants/Colors";
 
 const USERS = [
   {
@@ -101,10 +102,10 @@ const Login = () => {
     <VStack className="max-w-[440px] w-full" space="md">
       <VStack className="md:items-center" space="md">
         <VStack>
-          <Heading className="md:text-center" size="3xl">
+          <Heading className="md:text-center" size="3xl" style={{ color: white }}>
             Log in
           </Heading>
-          <Text>Login to start using harmoni pos</Text>
+          <Text style={{ color: white }}>Login to start using harmoni pos</Text>
         </VStack>
       </VStack>
       <VStack className="w-full">
@@ -114,7 +115,7 @@ const Login = () => {
             className="w-full"
           >
             <FormControlLabel>
-              <FormControlLabelText>Email</FormControlLabelText>
+              <FormControlLabelText style={{ color: white }}>Email</FormControlLabelText>
             </FormControlLabel>
             <Controller
               defaultValue=""
@@ -139,6 +140,7 @@ const Login = () => {
                     onBlur={onBlur}
                     onSubmitEditing={handleKeyPress}
                     returnKeyType="done"
+                    style={{ color: white }}
                   />
                 </Input>
               )}
@@ -157,7 +159,7 @@ const Login = () => {
             className="w-full"
           >
             <FormControlLabel>
-              <FormControlLabelText>Password</FormControlLabelText>
+              <FormControlLabelText style={{ color: white }}>Password</FormControlLabelText>
             </FormControlLabel>
             <Controller
               defaultValue=""
@@ -183,6 +185,7 @@ const Login = () => {
                     onBlur={onBlur}
                     onSubmitEditing={handleKeyPress}
                     returnKeyType="done"
+                    style={{ color: white }}
                   />
                   <InputSlot onPress={handleState} className="pr-3">
                     <InputIcon as={showPassword ? EyeIcon : EyeOffIcon} />
@@ -214,15 +217,15 @@ const Login = () => {
                   <CheckboxIndicator>
                     <CheckboxIcon as={CheckIcon} />
                   </CheckboxIndicator>
-                  <CheckboxLabel>Remember me</CheckboxLabel>
+                  <CheckboxLabel style={{ color: white }}>Remember me</CheckboxLabel>
                 </Checkbox>
               )}
             />
           </HStack>
         </VStack>
-        <VStack className="w-full my-7 " space="lg">
-          <Button className="w-full" onPress={handleSubmit(onSubmit)}>
-            <ButtonText className="font-medium">Log in</ButtonText>
+        <VStack className="w-full my-7 " space="lg" >
+          <Button className="w-full" onPress={handleSubmit(onSubmit)} style={{ backgroundColor: white }}>
+            <ButtonText className="font-medium" style={{ color: midnightBlue }}>Log in</ButtonText>
           </Button>
         </VStack>
       </VStack>
@@ -232,7 +235,7 @@ const Login = () => {
 
 export default function LoginLayout() {
   return (
-    <VStack className="p-10">
+    <VStack className="flex-1 p-10" style={{ backgroundColor: midnightBlue }}>
       <Login />
     </VStack>
   );

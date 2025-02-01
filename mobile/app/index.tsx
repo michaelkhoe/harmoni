@@ -5,6 +5,8 @@ import { useColorScheme } from "nativewind";
 
 import { useRouter } from "@unitools/router";
 
+import { midnightBlue, white } from "@/constants/Colors";
+
 const SplashScreen = () => {
     const router = useRouter();
     const { colorScheme } = useColorScheme();
@@ -12,22 +14,24 @@ const SplashScreen = () => {
         <VStack
             className="w-full max-w-[440px] items-center h-full justify-center"
             space="lg"
+            style={{ backgroundColor: midnightBlue }}
         >
             <Image
-            source={require('@/assets/images/logo.png')}
-            alt="Logo"
-            size="none"
-            className="aspect-[320/208] w-full max-w-[320px]"
+                source={require('@/assets/images/harmoni-logo.png')}
+                alt="Logo"
+                size="none"
+                className="aspect-[320/208] w-full max-w-[320px]"
             />
             <VStack className="w-full" space="lg">
-            <Button
-                className="w-full"
-                onPress={() => {
-                router.push("/auth/login");
-                }}
-            >
-                <ButtonText className="font-medium">Log in</ButtonText>
-            </Button>
+                <Button
+                    className="w-full"
+                    onPress={() => {
+                        router.push("/auth/login");
+                    }}
+                    style={{ backgroundColor: white }}
+                >
+                    <ButtonText className="font-medium" style={{ color: midnightBlue, textAlign: 'center' }}>Log in</ButtonText>
+                </Button>
             </VStack>
         </VStack>
     );
@@ -35,7 +39,7 @@ const SplashScreen = () => {
 
 export default function SplashScreenLayout() {
     return (
-        <VStack className="flex-1 justify-center items-center px-9">
+        <VStack className="flex-1 justify-center items-center px-9" style={{ backgroundColor: midnightBlue }}>
             <SplashScreen />
         </VStack>
     );
