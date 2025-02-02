@@ -9,6 +9,7 @@ import Alert from '@mui/material/Alert';
 import { useTheme } from '@mui/material/styles';
 import { iconButtonClasses } from '@mui/material/IconButton';
 
+import { allLangs } from 'src/locales';
 import { _contacts, _notifications } from 'src/_mock';
 
 import { Logo } from 'src/components/logo';
@@ -126,7 +127,7 @@ export function DashboardLayout({
           {/** @slot Workspace popover */}
           <WorkspacesPopover
             data={_workspaces}
-            sx={{ color: 'var(--layout-nav-text-primary-color)' }}
+            sx={{ ...(isNavHorizontal && { color: 'var(--layout-nav-text-primary-color)' }) }}
           />
         </>
       ),
@@ -136,15 +137,7 @@ export function DashboardLayout({
           <Searchbar data={navData} />
 
           {/** @slot Language popover */}
-          <LanguagePopover
-            data={[
-              { value: 'en', label: 'English', countryCode: 'GB' },
-              { value: 'fr', label: 'French', countryCode: 'FR' },
-              { value: 'vi', label: 'Vietnamese', countryCode: 'VN' },
-              { value: 'cn', label: 'Chinese', countryCode: 'CN' },
-              { value: 'ar', label: 'Arabic', countryCode: 'SA' },
-            ]}
-          />
+          <LanguagePopover data={allLangs} />
 
           {/** @slot Notifications popover */}
           <NotificationsDrawer data={_notifications} />
