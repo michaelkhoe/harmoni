@@ -173,8 +173,8 @@ public class AuthService {
             UUID sessionToken = UUID.fromString(sessionTokenStr);
             UUID refreshToken = UUID.fromString(refreshTokenStr);
 
-            this.sessionRepository.deleteById(sessionToken);
-            this.refreshTokenRepository.deleteById(refreshToken);
+            this.sessionRepository.softDelete(sessionToken);
+            this.refreshTokenRepository.softDelete(refreshToken);
         } catch (Exception e) {
             System.err.println("error on attempting to delete session and refresh-token");
             System.err.println(e);

@@ -13,7 +13,7 @@ services:
     # we can use volume config to have a quick setup for the db migration, 
     # since we dont have atm, i kept it commented
     volumes:
-      - ${LOCAL_WORKSPACE_FOLDER:-.}/.docker/postgres/migrations:/docker-entrypoint-initdb.d
+      - ${LOCAL_WORKSPACE_FOLDER:-.}/.docker/postgres:/docker-entrypoint-initdb.d
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -d postgres -U local"]
       interval: 1s
