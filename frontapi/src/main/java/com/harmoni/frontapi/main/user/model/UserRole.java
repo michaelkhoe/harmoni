@@ -1,6 +1,6 @@
 package com.harmoni.frontapi.main.user.model;
 
-public enum Role {
+public enum UserRole {
     ADMIN, 
     USER,
     SALES
