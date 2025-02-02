@@ -1,3 +1,5 @@
+'use client';
+
 import type { Breakpoint } from '@mui/material/styles';
 import type { NavSectionProps } from 'src/components/nav-section';
 
@@ -127,7 +129,7 @@ export function DashboardLayout({
           {/** @slot Workspace popover */}
           <WorkspacesPopover
             data={_workspaces}
-            sx={{ ...(isNavHorizontal && { color: 'var(--layout-nav-text-primary-color)' }) }}
+            sx={{ color: 'var(--layout-nav-text-primary-color)' }}
           />
         </>
       ),

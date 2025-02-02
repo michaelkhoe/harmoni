@@ -1,3 +1,5 @@
+'use client';
+
 import type { SettingsState } from 'src/components/settings';
 import type { Theme, Components } from '@mui/material/styles';
 

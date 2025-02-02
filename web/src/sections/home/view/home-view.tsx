@@ -1,3 +1,5 @@
+'use client';
+
 import type { FabProps } from '@mui/material/Fab';
 import type { UseBackToTopReturn } from 'minimal-shared/hooks';
 

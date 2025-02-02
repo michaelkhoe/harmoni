@@ -1,3 +1,5 @@
+'use client';
+
 import { varAlpha } from 'minimal-shared/utils';
 
 import Paper from '@mui/material/Paper';

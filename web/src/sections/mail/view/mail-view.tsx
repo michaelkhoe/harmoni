@@ -1,3 +1,5 @@
+'use client';
+
 import { useBoolean } from 'minimal-shared/hooks';
 import { useEffect, useCallback, startTransition } from 'react';
 

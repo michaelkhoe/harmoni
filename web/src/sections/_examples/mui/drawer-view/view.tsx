@@ -1,3 +1,5 @@
+'use client';
+
 import { AnchorDrawer } from './anchor-drawer';
 import { ComponentBox, ComponentLayout } from '../../layout';
 

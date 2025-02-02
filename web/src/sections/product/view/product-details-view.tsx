@@ -1,3 +1,5 @@
+'use client';
+
 import type { IProductItem } from 'src/types/product';
 
 import { useTabs } from 'minimal-shared/hooks';
@@ -9,19 +11,15 @@ import Box from '@mui/material/Box';
 import Tabs from '@mui/material/Tabs';
 import Card from '@mui/material/Card';
 import Grid from '@mui/material/Grid2';
-import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 
 import { paths } from 'src/routes/paths';
-import { RouterLink } from 'src/routes/components';
 
 import { PRODUCT_PUBLISH_OPTIONS } from 'src/_mock';
 import { DashboardContent } from 'src/layouts/dashboard';
 
 import { Iconify } from 'src/components/iconify';
-import { EmptyContent } from 'src/components/empty-content';
 
-import { ProductDetailsSkeleton } from '../product-skeleton';
 import { ProductDetailsReview } from '../product-details-review';
 import { ProductDetailsSummary } from '../product-details-summary';
 import { ProductDetailsToolbar } from '../product-details-toolbar';
@@ -52,11 +50,9 @@ const SUMMARY = [
 
 type Props = {
   product?: IProductItem;
-  loading?: boolean;
-  error?: any;
 };
 
-export function ProductDetailsView({ product, error, loading }: Props) {
+export function ProductDetailsView({ product }: Props) {
   const tabs = useTabs('description');
 
   const [publish, setPublish] = useState('');
@@ -70,36 +66,6 @@ export function ProductDetailsView({ product, error, loading }: Props) {
   const handleChangePublish = useCallback((newValue: string) => {
     setPublish(newValue);
   }, []);
-
-  if (loading) {
-    return (
-      <DashboardContent sx={{ pt: 5 }}>
-        <ProductDetailsSkeleton />
-      </DashboardContent>
-    );
-  }
-
-  if (error) {
-    return (
-      <DashboardContent sx={{ pt: 5 }}>
-        <EmptyContent
-          filled
-          title="Product not found!"
-          action={
-            <Button
-              component={RouterLink}
-              href={paths.dashboard.product.root}
-              startIcon={<Iconify width={16} icon="eva:arrow-ios-back-fill" />}
-              sx={{ mt: 3 }}
-            >
-              Back to list
-            </Button>
-          }
-          sx={{ py: 10, height: 'auto', flexGrow: 'unset' }}
-        />
-      </DashboardContent>
-    );
-  }
 
   return (
     <DashboardContent>

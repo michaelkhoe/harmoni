@@ -1,7 +1,9 @@
+'use client';
+
 import { isEqual } from 'es-toolkit';
-import { useLocalStorage } from 'minimal-shared/hooks';
+import { getCookie, getStorage } from 'minimal-shared/utils';
 import { useMemo, useState, useEffect, useCallback } from 'react';
-import { getStorage as getStorageValue } from 'minimal-shared/utils';
+import { useCookies, useLocalStorage } from 'minimal-shared/hooks';
 
 import { SettingsContext } from './settings-context';
 import { SETTINGS_STORAGE_KEY } from '../settings-config';
@@ -12,12 +14,18 @@ import type { SettingsState, SettingsProviderProps } from '../types';
 
 export function SettingsProvider({
   children,
+  cookieSettings,
   defaultSettings,
   storageKey = SETTINGS_STORAGE_KEY,
 }: SettingsProviderProps) {
-  const { state, setState, resetState, setField } = useLocalStorage<SettingsState>(
+  const isCookieEnabled = !!cookieSettings;
+  const useStorage = isCookieEnabled ? useCookies : useLocalStorage;
+  const initialSettings = isCookieEnabled ? cookieSettings : defaultSettings;
+  const getStorageValue = isCookieEnabled ? getCookie : getStorage;
+
+  const { state, setState, resetState, setField } = useStorage<SettingsState>(
     storageKey,
-    defaultSettings
+    initialSettings
   );
 
   const [openDrawer, setOpenDrawer] = useState(false);

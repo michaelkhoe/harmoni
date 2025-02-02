@@ -1,3 +1,5 @@
+'use client';
+
 import type { IOrderItem } from 'src/types/order';
 
 import { useState, useCallback } from 'react';

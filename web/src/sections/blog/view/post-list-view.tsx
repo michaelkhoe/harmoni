@@ -1,3 +1,5 @@
+'use client';
+
 import type { IPostItem, IPostFilters } from 'src/types/blog';
 
 import { orderBy } from 'es-toolkit';

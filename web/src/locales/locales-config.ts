@@ -3,6 +3,7 @@
 export const fallbackLng = 'en';
 export const languages = ['en', 'fr', 'vi', 'cn', 'ar'];
 export const defaultNS = 'common';
+export const cookieName = 'i18next';
 
 export type LanguageValue = (typeof languages)[number];
 

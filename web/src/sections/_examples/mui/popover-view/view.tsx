@@ -1,3 +1,5 @@
+'use client';
+
 import type { PopoverArrow } from 'src/components/custom-popover';
 
 import { useState, useCallback } from 'react';

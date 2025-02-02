@@ -1,3 +1,5 @@
+'use client';
+
 import type { MapProps } from 'src/components/map';
 import type { Theme, SxProps } from '@mui/material/styles';
 

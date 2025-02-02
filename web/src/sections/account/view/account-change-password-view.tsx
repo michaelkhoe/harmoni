@@ -1,3 +1,5 @@
+'use client';
+
 import { AccountChangePassword } from '../account-change-password';
 
 // ----------------------------------------------------------------------

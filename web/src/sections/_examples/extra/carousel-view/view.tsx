@@ -1,3 +1,5 @@
+'use client';
+
 import { _mock } from 'src/_mock';
 
 import { CarouselFade } from './carousel-fade';

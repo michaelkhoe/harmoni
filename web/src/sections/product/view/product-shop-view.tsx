@@ -1,3 +1,5 @@
+'use client';
+
 import type { IProductItem, IProductFilters } from 'src/types/product';
 
 import { useState } from 'react';
@@ -33,10 +35,9 @@ import { ProductFiltersResult } from '../product-filters-result';
 
 type Props = {
   products: IProductItem[];
-  loading?: boolean;
 };
 
-export function ProductShopView({ products, loading }: Props) {
+export function ProductShopView({ products }: Props) {
   const { state: checkoutState } = useCheckoutContext();
 
   const openFilters = useBoolean();
@@ -67,7 +68,7 @@ export function ProductShopView({ products, loading }: Props) {
     currentFilters.priceRange[1] !== 200;
 
   const notFound = !dataFiltered.length && canReset;
-  const productsEmpty = !loading && !products.length;
+  const productsEmpty = !products.length;
 
   const renderFilters = () => (
     <Box
@@ -126,7 +127,7 @@ export function ProductShopView({ products, loading }: Props) {
 
       {(notFound || productsEmpty) && renderNotFound()}
 
-      <ProductList products={dataFiltered} loading={loading} />
+      <ProductList products={dataFiltered} />
     </Container>
   );
 }

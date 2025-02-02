@@ -1,3 +1,5 @@
+'use client';
+
 import type { PaperProps } from '@mui/material/Paper';
 import type { Grid2Props } from '@mui/material/Grid2';
 

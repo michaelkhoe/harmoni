@@ -1,3 +1,5 @@
+'use client';
+
 import type { IInvoice } from 'src/types/invoice';
 
 import { paths } from 'src/routes/paths';

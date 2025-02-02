@@ -9,9 +9,9 @@ import { usePathname } from 'src/routes/hooks';
 
 import { NavSearch } from './component-search';
 import { NavItem } from './component-nav-item';
-import { componentLayoutClasses } from './classes';
+import { componentLayoutClasses } from '../layout/classes';
 
-import type { NavItemData } from './nav-config-components';
+import type { NavItemData } from '../layout/nav-config-components';
 
 // ----------------------------------------------------------------------
 

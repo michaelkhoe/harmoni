@@ -1,3 +1,5 @@
+'use client';
+
 import type { TableHeadCellProps } from 'src/components/table';
 import type { IOrderItem, IOrderTableFilters } from 'src/types/order';
 

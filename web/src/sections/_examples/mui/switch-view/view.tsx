@@ -1,3 +1,5 @@
+'use client';
+
 import Switch from '@mui/material/Switch';
 import FormGroup from '@mui/material/FormGroup';
 import FormControl from '@mui/material/FormControl';

@@ -1,6 +1,7 @@
 import type { TabsProps } from '@mui/material/Tabs';
 import type { Theme, SxProps } from '@mui/material/styles';
 
+import NoSsr from '@mui/material/NoSsr';
 import { tabClasses } from '@mui/material/Tab';
 import Tabs, { tabsClasses } from '@mui/material/Tabs';
 
@@ -64,7 +65,11 @@ export function CustomTabs({ children, slotProps, sx, ...other }: CustomTabsProp
       ]}
       {...other}
       TabIndicatorProps={{
-        children: <span />,
+        children: (
+          <NoSsr>
+            <span />
+          </NoSsr>
+        ),
       }}
     >
       {children}
