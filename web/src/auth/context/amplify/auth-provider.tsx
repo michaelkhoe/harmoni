@@ -1,3 +1,5 @@
+'use client';
+
 import { Amplify } from 'aws-amplify';
 import { useSetState } from 'minimal-shared/hooks';
 import { useMemo, useEffect, useCallback } from 'react';

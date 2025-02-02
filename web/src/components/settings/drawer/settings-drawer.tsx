@@ -1,3 +1,5 @@
+'use client';
+
 import type { ThemeColorScheme } from 'src/theme/types';
 
 import { useEffect, useCallback } from 'react';

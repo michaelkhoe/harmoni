@@ -1,3 +1,5 @@
+'use client';
+
 import type { CSSObject } from '@mui/material/styles';
 
 import { varAlpha } from 'minimal-shared/utils';

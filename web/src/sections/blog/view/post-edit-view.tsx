@@ -1,3 +1,5 @@
+'use client';
+
 import type { IPostItem } from 'src/types/blog';
 
 import { paths } from 'src/routes/paths';

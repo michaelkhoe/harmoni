@@ -1,4 +1,4 @@
-import Joyride from 'react-joyride';
+import dynamic from 'next/dynamic';
 import { varAlpha } from 'minimal-shared/utils';
 
 import { useTheme } from '@mui/material/styles';
@@ -8,6 +8,8 @@ import { WalktourTooltip } from './walktour-tooltip';
 import type { WalktourProps } from './types';
 
 // ----------------------------------------------------------------------
+
+const Joyride = dynamic(() => import('react-joyride').then((mod) => mod.default), { ssr: false });
 
 export function Walktour({
   locale,

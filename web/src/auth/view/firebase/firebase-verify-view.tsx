@@ -1,3 +1,5 @@
+'use client';
+
 import { paths } from 'src/routes/paths';
 
 import { EmailInboxIcon } from 'src/assets/icons';

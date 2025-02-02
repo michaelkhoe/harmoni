@@ -1,5 +1,6 @@
+'use client';
+
 import type { IProductItem } from 'src/types/product';
-import type { Theme, SxProps } from '@mui/material/styles';
 
 import { useTabs } from 'minimal-shared/hooks';
 import { varAlpha } from 'minimal-shared/utils';
@@ -9,20 +10,16 @@ import Box from '@mui/material/Box';
 import Tabs from '@mui/material/Tabs';
 import Card from '@mui/material/Card';
 import Grid from '@mui/material/Grid2';
-import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 
 import { paths } from 'src/routes/paths';
-import { RouterLink } from 'src/routes/components';
 
 import { Iconify } from 'src/components/iconify';
-import { EmptyContent } from 'src/components/empty-content';
 import { CustomBreadcrumbs } from 'src/components/custom-breadcrumbs';
 
 import { CartIcon } from '../cart-icon';
 import { useCheckoutContext } from '../../checkout/context';
-import { ProductDetailsSkeleton } from '../product-skeleton';
 import { ProductDetailsReview } from '../product-details-review';
 import { ProductDetailsSummary } from '../product-details-summary';
 import { ProductDetailsCarousel } from '../product-details-carousel';
@@ -52,52 +49,15 @@ const SUMMARY = [
 
 type Props = {
   product?: IProductItem;
-  loading?: boolean;
-  error?: any;
 };
 
-export function ProductShopDetailsView({ product, error, loading }: Props) {
+export function ProductShopDetailsView({ product }: Props) {
   const { state: checkoutState, onAddToCart } = useCheckoutContext();
-
-  const containerStyles: SxProps<Theme> = {
-    mt: 5,
-    mb: 10,
-  };
 
   const tabs = useTabs('description');
 
-  if (loading) {
-    return (
-      <Container sx={containerStyles}>
-        <ProductDetailsSkeleton />
-      </Container>
-    );
-  }
-
-  if (error) {
-    return (
-      <Container sx={containerStyles}>
-        <EmptyContent
-          filled
-          title="Product not found!"
-          action={
-            <Button
-              component={RouterLink}
-              href={paths.product.root}
-              startIcon={<Iconify width={16} icon="eva:arrow-ios-back-fill" />}
-              sx={{ mt: 3 }}
-            >
-              Back to list
-            </Button>
-          }
-          sx={{ py: 10 }}
-        />
-      </Container>
-    );
-  }
-
   return (
-    <Container sx={containerStyles}>
+    <Container sx={{ mt: 5, mb: 10 }}>
       <CartIcon totalItems={checkoutState.totalItems} />
 
       <CustomBreadcrumbs

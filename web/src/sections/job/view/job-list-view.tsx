@@ -1,3 +1,5 @@
+'use client';
+
 import type { IJobItem, IJobFilters } from 'src/types/job';
 
 import { orderBy } from 'es-toolkit';

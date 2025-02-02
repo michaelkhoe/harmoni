@@ -18,7 +18,7 @@ import { useRouter, usePathname } from 'src/routes/hooks';
 import { Iconify } from 'src/components/iconify';
 import { SearchNotFound } from 'src/components/search-not-found';
 
-import type { NavItemData } from './nav-config-components';
+import type { NavItemData } from '../layout/nav-config-components';
 
 // ----------------------------------------------------------------------
 

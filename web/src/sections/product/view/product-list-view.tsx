@@ -1,3 +1,5 @@
+'use client';
+
 import type { Theme, SxProps } from '@mui/material/styles';
 import type { UseSetStateReturn } from 'minimal-shared/hooks';
 import type { IProductItem, IProductTableFilters } from 'src/types/product';

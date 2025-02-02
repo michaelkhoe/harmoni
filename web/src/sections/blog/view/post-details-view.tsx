@@ -1,3 +1,5 @@
+'use client';
+
 import type { IPostItem } from 'src/types/blog';
 
 import { useState, useEffect, useCallback } from 'react';
@@ -6,7 +8,6 @@ import Box from '@mui/material/Box';
 import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
 import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
 import Checkbox from '@mui/material/Checkbox';
 import Container from '@mui/material/Container';
@@ -15,7 +16,6 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import AvatarGroup, { avatarGroupClasses } from '@mui/material/AvatarGroup';
 
 import { paths } from 'src/routes/paths';
-import { RouterLink } from 'src/routes/components';
 
 import { fShortenNumber } from 'src/utils/format-number';
 
@@ -24,9 +24,7 @@ import { DashboardContent } from 'src/layouts/dashboard';
 
 import { Iconify } from 'src/components/iconify';
 import { Markdown } from 'src/components/markdown';
-import { EmptyContent } from 'src/components/empty-content';
 
-import { PostDetailsSkeleton } from '../post-skeleton';
 import { PostDetailsHero } from '../post-details-hero';
 import { PostCommentList } from '../post-comment-list';
 import { PostCommentForm } from '../post-comment-form';
@@ -36,11 +34,9 @@ import { PostDetailsToolbar } from '../post-details-toolbar';
 
 type Props = {
   post?: IPostItem;
-  loading?: boolean;
-  error?: any;
 };
 
-export function PostDetailsView({ post, loading, error }: Props) {
+export function PostDetailsView({ post }: Props) {
   const [publish, setPublish] = useState('');
 
   const handleChangePublish = useCallback((newValue: string) => {
@@ -52,36 +48,6 @@ export function PostDetailsView({ post, loading, error }: Props) {
       setPublish(post?.publish);
     }
   }, [post]);
-
-  if (loading) {
-    return (
-      <DashboardContent maxWidth={false} disablePadding>
-        <PostDetailsSkeleton />
-      </DashboardContent>
-    );
-  }
-
-  if (error) {
-    return (
-      <DashboardContent maxWidth={false}>
-        <EmptyContent
-          filled
-          title="Post not found!"
-          action={
-            <Button
-              component={RouterLink}
-              href={paths.dashboard.post.root}
-              startIcon={<Iconify width={16} icon="eva:arrow-ios-back-fill" />}
-              sx={{ mt: 3 }}
-            >
-              Back to list
-            </Button>
-          }
-          sx={{ py: 10, height: 'auto', flexGrow: 'unset' }}
-        />
-      </DashboardContent>
-    );
-  }
 
   return (
     <DashboardContent maxWidth={false} disablePadding>

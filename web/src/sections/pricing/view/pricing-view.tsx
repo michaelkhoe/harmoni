@@ -1,3 +1,5 @@
+'use client';
+
 import Box from '@mui/material/Box';
 import Switch from '@mui/material/Switch';
 import Container from '@mui/material/Container';

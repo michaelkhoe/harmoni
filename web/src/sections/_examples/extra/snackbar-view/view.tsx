@@ -1,3 +1,5 @@
+'use client';
+
 import type { ToastT } from 'src/components/snackbar';
 
 import Button from '@mui/material/Button';

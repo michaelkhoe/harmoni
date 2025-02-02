@@ -1,3 +1,5 @@
+'use client';
+
 import type { DashboardContentProps } from 'src/layouts/dashboard';
 
 import { removeLastSlash } from 'minimal-shared/utils';

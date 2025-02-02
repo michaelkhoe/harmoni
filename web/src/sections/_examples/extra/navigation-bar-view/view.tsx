@@ -1,3 +1,5 @@
+'use client';
+
 import { NavAPI } from './nav-api';
 import { NavMini } from './nav-mini';
 import { NavBasic } from './nav-basic';

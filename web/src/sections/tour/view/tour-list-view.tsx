@@ -1,3 +1,5 @@
+'use client';
+
 import type { ITourItem, ITourFilters } from 'src/types/tour';
 
 import { orderBy } from 'es-toolkit';

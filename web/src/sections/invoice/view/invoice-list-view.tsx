@@ -1,3 +1,5 @@
+'use client';
+
 import type { TableHeadCellProps } from 'src/components/table';
 import type { IInvoice, IInvoiceTableFilters } from 'src/types/invoice';
 

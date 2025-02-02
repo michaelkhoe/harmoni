@@ -1,6 +1,10 @@
+'use client';
+
 import dayjs from 'dayjs';
 import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
+
+import { useRouter } from 'src/routes/hooks';
 
 import { toast } from 'src/components/snackbar';
 
@@ -12,6 +16,8 @@ import type { LanguageValue } from './locales-config';
 // ----------------------------------------------------------------------
 
 export function useTranslate(ns?: string) {
+  const router = useRouter();
+
   const { t, i18n } = useTranslation(ns);
 
   const fallback = allLangs.filter((lang) => lang.value === fallbackLng)[0];
@@ -34,11 +40,13 @@ export function useTranslate(ns?: string) {
         if (currentLang) {
           dayjs.locale(currentLang.adapterLocale);
         }
+
+        router.refresh();
       } catch (error) {
         console.error(error);
       }
     },
-    [currentLang, i18n]
+    [currentLang, i18n, router]
   );
 
   return {

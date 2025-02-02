@@ -1,3 +1,5 @@
+'use client';
+
 import { varAlpha } from 'minimal-shared/utils';
 import { useCountdownDate } from 'minimal-shared/hooks';
 

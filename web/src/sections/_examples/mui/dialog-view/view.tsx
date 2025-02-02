@@ -1,3 +1,5 @@
+'use client';
+
 import { FormDialog } from './form-dialog';
 import { AlertDialog } from './alert-dialog';
 import { ScrollDialog } from './scroll-dialog';

@@ -4,6 +4,7 @@ import dayjs from 'dayjs';
 import { useState } from 'react';
 
 import Box from '@mui/material/Box';
+import NoSsr from '@mui/material/NoSsr';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { StaticDatePicker } from '@mui/x-date-pickers/StaticDatePicker';
 import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
@@ -86,11 +87,13 @@ export function PickerDate() {
       </Box>
 
       <ComponentBox title="Static mode">
-        <StaticDatePicker
-          orientation="landscape"
-          value={value}
-          onChange={(newValue) => setValue(newValue)}
-        />
+        <NoSsr>
+          <StaticDatePicker
+            orientation="landscape"
+            value={value}
+            onChange={(newValue) => setValue(newValue)}
+          />
+        </NoSsr>
       </ComponentBox>
     </Box>
   );

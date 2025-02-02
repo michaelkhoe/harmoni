@@ -1,3 +1,5 @@
+'use client';
+
 import type { IFile, IFileFilters } from 'src/types/file';
 
 import { useState, useCallback } from 'react';

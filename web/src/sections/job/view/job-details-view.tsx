@@ -1,3 +1,5 @@
+'use client';
+
 import type { IJobItem } from 'src/types/job';
 
 import { useState, useCallback } from 'react';
