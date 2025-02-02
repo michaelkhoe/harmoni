@@ -10,8 +10,8 @@
 		"ghcr.io/devcontainers/features/java:1": {
 			// specified the version, coz our spring 
 			// specifically uses java 21
-			"version": "21" 
-		},		
+			"version": "21"
+		},
 		"ghcr.io/devcontainers/features/node:1": {}
 	},
 	"mounts": [
@@ -20,7 +20,18 @@
 	"remoteUser": "root", // need this to elevate user inside workspace
 	"runArgs": [
 		"--name=harmoni-workspace"
-	]
+	],
+	"remoteEnv": {
+		"LOCAL_WORKSPACE_FOLDER": "${localWorkspaceFolder}" // this will help us traverse the directory
+	},
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"donjayamanne.githistory",
+				"eamodio.gitlens"
+			]
+		}
+	}
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// "forwardPorts": [],
 	// Configure tool-specific properties.
