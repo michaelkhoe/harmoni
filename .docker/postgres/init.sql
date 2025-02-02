@@ -22,14 +22,16 @@ CREATE TABLE public.sessions(
     "id" UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
     "user_id" UUID REFERENCES users (id),
     "created_at" TIMESTAMP DEFAULT now(),
-    "expired_at" TIMESTAMP
+    "expired_at" TIMESTAMP,
+    "deleted_at" TIMESTAMP
 );
 
 CREATE TABLE public.refresh_tokens(
     "id" UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
     "session_id" UUID REFERENCES sessions (id),
     "created_at" TIMESTAMP DEFAULT now(),
-    "expired_at" TIMESTAMP
+    "expired_at" TIMESTAMP,
+    "deleted_at" TIMESTAMP
 );
 
 -- create sample user
