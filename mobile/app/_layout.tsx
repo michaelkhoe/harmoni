@@ -11,6 +11,7 @@ import { useEffect } from "react";
 import { GluestackUIProvider } from "@/components/ui/gluestack-ui-provider";
 import { useColorScheme } from "@/components/useColorScheme";
 import "../global.css";
+import { S } from "@expo/html-elements";
 
 export {
   ErrorBoundary,
@@ -53,6 +54,14 @@ function RootLayoutNav() {
       <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
         <Stack screenOptions={{ headerShown: false }}>
           <Stack.Screen name="auth/login" />
+          <Stack.Screen name="home/index" />
+          <Stack.Screen name="product/index" />
+          <Stack.Screen name="transaction/history" />
+          <Stack.Screen name="transaction/details" />
+          <Stack.Screen name="order/scanner" />
+          <Stack.Screen name="order/input-details" />
+          <Stack.Screen name="order/input-product-confirmation" />
+          <Stack.Screen name="order/input-customer-details" />
         </Stack>
       </ThemeProvider>
     </GluestackUIProvider>
