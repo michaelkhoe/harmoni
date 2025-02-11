@@ -80,6 +80,7 @@ const Login = () => {
             );
           },
         });
+        router.push("/home");
         reset();
       }
     } else {
