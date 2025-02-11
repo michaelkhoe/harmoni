@@ -5,6 +5,7 @@ import ProductInputCell from "@/app/components/product-input-cell";
 import { midnightBlue, white } from "@/constants/Colors";
 import { useRouter } from "@unitools/router";
 import { Button, ButtonText, ButtonIcon } from "@/components/ui/button";
+import Styles from "@/constants/Styles";
 
 const data = Array.from({ length: 2 }, (_, i) => ({ key: `${i}`, title: `Item ${i + 1}` }));
 
@@ -12,11 +13,6 @@ const horizontalPadding = 16;
 
 const InputDetailsScreen = () => {
     const router = useRouter();
-    const [search, setSearch] = React.useState('');
-
-    const updateSearch = (search) => {
-        setSearch(search);
-    };
       
     const renderItem = ({ item }) => (
         <View style={[styles.item]}>
@@ -25,9 +21,9 @@ const InputDetailsScreen = () => {
     );
 
     return (
-        <View style={styles.container}>
-            <ScrollView style={styles.container}>
-                <Text style={styles.title}>Input Details - Product Confirmation</Text>
+        <View style={Styles.container}>
+            <Text style={Styles.title}>Input Details - Product Confirmation</Text>
+            <ScrollView style={{ backgroundColor: white, borderRadius: 4 }}>
                 <FlatList
                     data={data}
                     renderItem={renderItem}
@@ -35,8 +31,8 @@ const InputDetailsScreen = () => {
                     numColumns={1}
                     contentContainerStyle={styles.itemContainer}
                 />
-                <Button className="w-full" onPress={() => { router.push("/order/input-details"); }} style={{ backgroundColor: white }}>
-                    <ButtonText className="font-medium" style={{ color: midnightBlue }}>Add More Product</ButtonText>
+                <Button onPress={() => { }} style={{ backgroundColor: midnightBlue, marginHorizontal: 8 }}>
+                    <ButtonText className="font-medium" style={{ color: white }}>Add More Product</ButtonText>
                 </Button>
             </ScrollView>
             <View style={styles.bottomButtonContainer}>
@@ -49,26 +45,6 @@ const InputDetailsScreen = () => {
 };
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        padding: horizontalPadding,
-        backgroundColor: midnightBlue,
-    },
-    title: {
-        fontSize: 24,
-        fontWeight: 'bold',
-        marginBottom: 10,
-        color: white,
-    },
-    searchBar: {
-        height: 40,
-        borderColor: '#ccc',
-        borderWidth: 1,
-        borderRadius: 5,
-        marginBottom: 10,
-        paddingHorizontal: 10,
-        color: white,
-    },
     itemContainer: {    
         flexGrow: 1
     },
@@ -79,6 +55,7 @@ const styles = StyleSheet.create({
         borderRadius: 5,
     },
     bottomButtonContainer: {
+        marginTop: 20,
         paddingBottom: 20,
     },
 });

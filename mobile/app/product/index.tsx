@@ -1,9 +1,11 @@
 import React from 'react';
-import { View, FlatList, StyleSheet, Dimensions, Text, TextInput } from 'react-native';
-import { SearchBar } from '@rneui/themed';
+import { View, FlatList, StyleSheet, Dimensions, Text, TextInput, Platform } from 'react-native';
 import { ScrollView } from "@/components/ui/scroll-view";
 import ProductCell from "@/app/components/product-cell";
 import { midnightBlue, white } from "@/constants/Colors";
+import { Input, InputField, InputIcon, InputSlot } from "@/components/ui/input"
+import { SearchIcon } from "@/components/ui/icon"
+import Styles from "@/constants/Styles";
 
 const { width } = Dimensions.get('window');
 
@@ -28,20 +30,22 @@ const ProductScreen = () => {
 
     return (
         <ScrollView style={styles.container}>
-            <Text style={styles.title}>Product List</Text>
-            <SearchBar
-                placeholder="Type Here..."
-                onChangeText={updateSearch}
-                value={search}
-                platform='ios'
-            />
-            <FlatList
-                data={data}
-                renderItem={renderItem}
-                keyExtractor={(item) => item.key}
-                numColumns={numColumns}
-                contentContainerStyle={styles.itemContainer}
-            />
+            <Text style={Styles.title}>Product List</Text>
+            <Input style={Styles.searchBar}>
+                <InputSlot className="pl-3">
+                    <InputIcon as={SearchIcon} />
+                </InputSlot>
+                <InputField placeholder="Search..." style={{ color: white }}/>
+            </Input>
+            <View style={{ backgroundColor: white }}>
+                <FlatList
+                    data={data}
+                    renderItem={renderItem}
+                    keyExtractor={(item) => item.key}
+                    numColumns={numColumns}
+                    contentContainerStyle={styles.itemContainer}
+                />
+            </View>
         </ScrollView>
     );
 };
@@ -52,23 +56,8 @@ const styles = StyleSheet.create({
         padding: horizontalPadding,
         backgroundColor: midnightBlue,
     },
-    title: {
-        fontSize: 24,
-        fontWeight: 'bold',
-        marginBottom: 10,
-        color: white,
-    },
-    searchBar: {
-        height: 40,
-        borderColor: '#ccc',
-        borderWidth: 1,
-        borderRadius: 5,
-        marginBottom: 10,
-        paddingHorizontal: 10,
-        color: white,
-    },
     itemContainer: {    
-        flexGrow: 1
+        flexGrow: 1,
     },
     item: {
         justifyContent: 'center',

@@ -18,10 +18,13 @@ const ProductInputCell: React.FC<TransactionCellProps> = ({  }) => {
     const price = 1000;
     const sellingPrice = 1200;
     const total = qty * price;
+    const formatRupiah = (number: number) => {
+        return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(number);
+    };
     return (
         <View style={styles.container}>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                <Text style={styles.date}>{productName}</Text>
+                <Text style={styles.productName}>{productName}</Text>
                 <InputSpinner
                     max={100}
                     min={1}
@@ -36,9 +39,9 @@ const ProductInputCell: React.FC<TransactionCellProps> = ({  }) => {
                     style={styles.spinner}
                 />
             </View>
-            <Text>Base Price: {price}</Text>
-            <Text>Sell Price: {sellingPrice}</Text>
-            <Text>Total Price: Rp.{total}</Text>
+            <Text style={styles.detailsText} >Base Price: {formatRupiah(price)}</Text>
+            <Text style={styles.detailsText} >Sell Price: {formatRupiah(sellingPrice)}</Text>
+            <Text style={styles.detailsText} >Total Price: {formatRupiah(total)}</Text>
         </View>
     );
 };
@@ -49,25 +52,21 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         borderBottomColor: '#ccc',
     },
-    date: {
-        fontSize: 16,
-        fontWeight: 'bold',
-        marginBottom: 5,
-    },
-    sectionTitle: {
+    productName: {
         fontSize: 16,
         fontWeight: 'bold',
         marginBottom: 5,
     },
     spinner: {
 		flex: 1,
-		marginRight: 10,
 		minWidth: 150,
         transform: [{ scale: 0.5 }],
+        marginRight: -40,
+        marginTop: -15,
 	},
-    product: {
-        fontSize: 14,
-        marginBottom: 2,
+    detailsText: {
+        fontSize: 12,
+        fontWeight: 'medium'
     },
 });
 

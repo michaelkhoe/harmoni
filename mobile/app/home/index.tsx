@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
+import { Image } from "@/components/ui/image";
 import { Button, ButtonText, ButtonIcon } from "@/components/ui/button";
 import { ScrollView } from "@/components/ui/scroll-view";
 import { useRouter } from "@unitools/router";
@@ -29,20 +30,26 @@ const HomeScreen = () => {
                 <Text style={styles.sectionTitle}>Product List</Text>
                 <View style={styles.menuSection}>
                     <TouchableOpacity style={styles.menuItem} onPress={() => { router.push("/product"); }}>
-                        <View style={styles.iconContainer}>
-                            <Text>📱</Text>
+                        <View style={{ alignItems: 'center' }}>
+                            <Image 
+                                source={require('@/assets/images/electronic-icon.png')} 
+                                style={{ width: 24, height: 24 }}
+                                resizeMode='contain'
+                                size='xs'/>
+                            <Text style={{ padding:8, fontWeight:'bold' }}>Electronic</Text>
                         </View>
-                        <Text>Electronic</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.menuItem} onPress={() => { router.push("/product"); }}>
-                        <View style={styles.iconContainer}>
-                            <Text>📱</Text>
-                        </View>
-                        <Text>Furniture</Text>
+                        <Image 
+                            source={require('@/assets/images/furniture-icon.png')} 
+                            style={{ width: 24, height: 24 }}
+                            resizeMode='contain'
+                            size='xs'/>
+                        <Text style={{ padding:8, fontWeight:'bold' }}>Furniture</Text>
                     </TouchableOpacity>
                 </View>
                 <TouchableOpacity style={styles.menuBtnItem} onPress={() => { router.push("/product"); }}>
-                    <Text>See All</Text>
+                    <Text style={{ fontWeight:'bold' }}>See All</Text>
                 </TouchableOpacity>
             </View>
             <View style={styles.cardContainer}>
@@ -71,7 +78,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 16,
-        backgroundColor: midnightBlue,
+        backgroundColor: '#081B30',
     },
     cardContainer: {
         backgroundColor: white,
@@ -88,7 +95,7 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         padding: 16,
-        height: 88,
+        // height: 88,
         backgroundColor: '#f0f0f0',
         marginHorizontal: 8,
         borderRadius: 8
@@ -108,16 +115,7 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontWeight: 'bold',
         padding: 16,
-        color: '#fff',
-        marginLeft: -8,
-    },
-    transactionItem: {
-        padding: 16,
-        backgroundColor: '#fff',
-        marginBottom: 8,
-        borderRadius: 8,
-        borderWidth: 1,
-        borderColor: '#ddd',
+        marginTop: -8,
     },
     orderButtonSection: {
         marginTop: 16,

@@ -5,6 +5,7 @@ import ProductTxnCell from "@/app/components/product-txn-cell";
 import { midnightBlue, white } from "@/constants/Colors";
 import { useRouter } from "@unitools/router";
 import { Button, ButtonText, ButtonIcon } from "@/components/ui/button";
+import Styles from "@/constants/Styles";
 
 const data = Array.from({ length: 2 }, (_, i) => ({ key: `${i}`, title: `Item ${i + 1}` }));
 
@@ -15,21 +16,21 @@ const InputProductConfirmationScreen = () => {
     const [search, setSearch] = React.useState('');
       
     const renderItem = ({ item }) => (
-        <View style={[styles.item]}>
+        <View style={[Styles.item]}>
             <ProductTxnCell transaction={item} />
         </View>
     );
 
     return (
-        <View style={styles.container}>
-            <ScrollView style={styles.container}>
-                <Text style={styles.title}>Input Product Confirmation</Text>
+        <View style={Styles.container}>
+            <Text style={Styles.title}>Input Product Confirmation</Text>
+            <ScrollView style={{ backgroundColor: white, borderRadius: 4 }}>
                 <FlatList
                     data={data}
                     renderItem={renderItem}
                     keyExtractor={(item) => item.key}
                     numColumns={1}
-                    contentContainerStyle={styles.itemContainer}
+                    contentContainerStyle={Styles.itemContainer}
                 />
             </ScrollView>
             <View style={styles.bottomButtonContainer}>
@@ -42,36 +43,8 @@ const InputProductConfirmationScreen = () => {
 };
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        padding: horizontalPadding,
-        backgroundColor: midnightBlue,
-    },
-    title: {
-        fontSize: 24,
-        fontWeight: 'bold',
-        marginBottom: 10,
-        color: white,
-    },
-    searchBar: {
-        height: 40,
-        borderColor: '#ccc',
-        borderWidth: 1,
-        borderRadius: 5,
-        marginBottom: 10,
-        paddingHorizontal: 10,
-        color: white,
-    },
-    itemContainer: {    
-        flexGrow: 1
-    },
-    item: {
-        justifyContent: 'center',
-        margin: 4,
-        backgroundColor: '#fff',
-        borderRadius: 5,
-    },
     bottomButtonContainer: {
+        marginTop: 20,
         paddingBottom: 20,
     },
 });
