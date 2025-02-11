@@ -30,12 +30,12 @@ const TransactionCell: React.FC<TransactionCellProps> = ({ }) => {
     return (
         <View style={styles.container}>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                <Text style={styles.date}>{date}</Text>
-                <Text style={styles.sectionTitle}>Sales PIC</Text>
+                <Text style={styles.bigText}>{date}</Text>
+                <Text style={styles.bigText}>Sales PIC</Text>
             </View>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                <Text style={styles.sectionTitle}>Products</Text>
-                <Text style={styles.sectionTitle}>Customer Name</Text>
+                <Text style={styles.bigText}>Products</Text>
+                <Text style={styles.bigText}>Customer Name</Text>
             </View>
             {products?.map(product => (
                 <Text key={product.id} style={styles.product}>
@@ -43,8 +43,8 @@ const TransactionCell: React.FC<TransactionCellProps> = ({ }) => {
                 </Text>
             ))}
             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                <Text style={styles.sectionTitle}>Total Price</Text>
-                <Text style={styles.sectionTitle}>Rp. 10.000.000</Text>
+                <Text style={styles.bigText}>Total Price</Text>
+                <Text style={styles.bigText}>Rp. 10.000.000</Text>
             </View>
         </View>
     );
@@ -64,18 +64,13 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         margin: 4
     },
-    date: {
-        fontSize: 16,
-        fontWeight: 'bold',
-        marginBottom: 5,
-    },
-    sectionTitle: {
-        fontSize: 16,
+    bigText: {
+        fontSize: 14,
         fontWeight: 'bold',
         marginBottom: 5,
     },
     product: {
-        fontSize: 14,
+        fontSize: 12,
         marginBottom: 2,
     },
 });

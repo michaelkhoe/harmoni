@@ -37,15 +37,13 @@ const ProductScreen = () => {
                 </InputSlot>
                 <InputField placeholder="Search..." style={{ color: white }}/>
             </Input>
-            <View style={{ backgroundColor: white }}>
-                <FlatList
-                    data={data}
-                    renderItem={renderItem}
-                    keyExtractor={(item) => item.key}
-                    numColumns={numColumns}
-                    contentContainerStyle={styles.itemContainer}
-                />
-            </View>
+            <FlatList
+                data={data}
+                renderItem={renderItem}
+                keyExtractor={(item) => item.key}
+                numColumns={numColumns}
+                contentContainerStyle={styles.itemContainer}
+            />
         </ScrollView>
     );
 };
