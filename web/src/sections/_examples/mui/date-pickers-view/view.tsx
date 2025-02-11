@@ -1,3 +1,5 @@
+'use client';
+
 import { paths } from 'src/routes/paths';
 
 import { PickerDate } from './picker-date';

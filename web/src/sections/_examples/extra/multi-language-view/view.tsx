@@ -1,5 +1,8 @@
+'use client';
+
 import type { Dayjs } from 'dayjs';
 import type { LanguageValue } from 'src/locales';
+import type { NavSectionProps } from 'src/components/nav-section';
 
 import dayjs from 'dayjs';
 import { useState, useCallback } from 'react';
@@ -26,7 +29,11 @@ import { navData as clientNavData } from './nav-config-translate';
 
 // ----------------------------------------------------------------------
 
-export function MultiLanguageView() {
+type Props = {
+  ssrNavData?: NavSectionProps['data'];
+};
+
+export function MultiLanguageView({ ssrNavData }: Props) {
   const trans = useTranslate();
   const navTrans = useTranslate('navbar');
 
@@ -34,7 +41,7 @@ export function MultiLanguageView() {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [date, setDate] = useState<Dayjs | null>(dayjs(new Date()));
 
-  const navData = clientNavData(navTrans.t);
+  const navData = ssrNavData ?? clientNavData(navTrans.t);
 
   const handleChangePage = useCallback(
     (event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => {

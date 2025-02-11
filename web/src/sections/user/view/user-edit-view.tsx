@@ -1,3 +1,5 @@
+'use client';
+
 import type { IUserItem } from 'src/types/user';
 
 import { paths } from 'src/routes/paths';

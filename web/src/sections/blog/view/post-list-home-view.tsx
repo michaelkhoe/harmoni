@@ -1,3 +1,5 @@
+'use client';
+
 import type { IPostItem } from 'src/types/blog';
 
 import { useState } from 'react';
@@ -19,10 +21,9 @@ import { PostSearch } from '../post-search';
 
 type Props = {
   posts: IPostItem[];
-  loading?: boolean;
 };
 
-export function PostListHomeView({ posts, loading }: Props) {
+export function PostListHomeView({ posts }: Props) {
   const [sortBy, setSortBy] = useState('latest');
 
   const dataFiltered = applyFilter({ inputData: posts, sortBy });
@@ -54,7 +55,7 @@ export function PostListHomeView({ posts, loading }: Props) {
         />
       </Box>
 
-      <PostList posts={dataFiltered} loading={loading} />
+      <PostList posts={dataFiltered} />
     </Container>
   );
 }

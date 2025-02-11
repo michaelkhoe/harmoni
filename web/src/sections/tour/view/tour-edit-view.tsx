@@ -1,3 +1,5 @@
+'use client';
+
 import type { ITourItem } from 'src/types/tour';
 
 import { paths } from 'src/routes/paths';

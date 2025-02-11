@@ -1,3 +1,5 @@
+'use client';
+
 import { AccountGeneral } from '../account-general';
 
 // ----------------------------------------------------------------------

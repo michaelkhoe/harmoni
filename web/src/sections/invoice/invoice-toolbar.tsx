@@ -1,5 +1,6 @@
 import type { IInvoice } from 'src/types/invoice';
 
+import dynamic from 'next/dynamic';
 import { useBoolean } from 'minimal-shared/hooks';
 
 import Box from '@mui/material/Box';
@@ -16,9 +17,17 @@ import { RouterLink } from 'src/routes/components';
 
 import { Iconify } from 'src/components/iconify';
 
-import { InvoicePDFViewer, InvoicePDFDownload } from './invoice-pdf';
-
 // ----------------------------------------------------------------------
+
+const InvoicePDFDownload = dynamic(
+  () => import('./invoice-pdf').then((mod) => mod.InvoicePDFDownload),
+  { ssr: false }
+);
+
+const InvoicePDFViewer = dynamic(
+  () => import('./invoice-pdf').then((mod) => mod.InvoicePDFViewer),
+  { ssr: false }
+);
 
 type Props = {
   invoice?: IInvoice;

@@ -1,3 +1,5 @@
+'use client';
+
 import type { Slide, SlideImage, SlideVideo } from 'yet-another-react-lightbox';
 
 import { useState } from 'react';

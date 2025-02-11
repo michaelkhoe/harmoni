@@ -1,3 +1,5 @@
+'use client';
+
 // core (MUI)
 import {
   frFR as frFRCore,

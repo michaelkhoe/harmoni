@@ -1,3 +1,5 @@
+'use client';
+
 import type { PaperProps } from '@mui/material/Paper';
 import type { Theme, SxProps } from '@mui/material/styles';
 

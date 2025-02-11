@@ -1,3 +1,5 @@
+'use client';
+
 import Link from '@mui/material/Link';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';

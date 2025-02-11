@@ -1,3 +1,5 @@
+'use client';
+
 import { useState, useCallback } from 'react';
 import { useDoubleClick, useCopyToClipboard } from 'minimal-shared/hooks';
 

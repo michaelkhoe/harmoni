@@ -1,3 +1,5 @@
+'use client';
+
 import type { IconContainerProps } from '@mui/material/Rating';
 
 import { useState } from 'react';

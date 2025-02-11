@@ -12,7 +12,7 @@ import { Label } from 'src/components/label';
 import { Image } from 'src/components/image';
 import { varTap, varHover, transitionTap } from 'src/components/animate';
 
-import type { NavItemData } from './nav-config-components';
+import type { NavItemData } from '../layout/nav-config-components';
 
 // ----------------------------------------------------------------------
 

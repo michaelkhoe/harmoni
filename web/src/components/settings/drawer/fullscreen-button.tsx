@@ -1,3 +1,5 @@
+'use client';
+
 import { useState, useCallback } from 'react';
 
 import Tooltip from '@mui/material/Tooltip';

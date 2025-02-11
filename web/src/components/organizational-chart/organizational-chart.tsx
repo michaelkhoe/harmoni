@@ -1,9 +1,19 @@
+import dynamic from 'next/dynamic';
 import { cloneElement } from 'react';
-import { Tree, TreeNode } from 'react-organizational-chart';
 
 import { useTheme } from '@mui/material/styles';
 
 import type { OrgChartProps, OrgChartListProps, OrgChartSubListProps } from './types';
+
+// ----------------------------------------------------------------------
+
+const Tree = dynamic(() => import('react-organizational-chart').then((mod) => mod.Tree), {
+  ssr: false,
+});
+
+const TreeNode = dynamic(() => import('react-organizational-chart').then((mod) => mod.TreeNode), {
+  ssr: false,
+});
 
 // ----------------------------------------------------------------------
 

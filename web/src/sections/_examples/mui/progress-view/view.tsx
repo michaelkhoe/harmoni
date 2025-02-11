@@ -1,3 +1,5 @@
+'use client';
+
 import type { Theme, SxProps } from '@mui/material/styles';
 
 import { useRef, useState, useEffect } from 'react';

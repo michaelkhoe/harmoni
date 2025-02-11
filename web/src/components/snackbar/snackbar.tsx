@@ -1,3 +1,5 @@
+'use client';
+
 import Portal from '@mui/material/Portal';
 
 import { Iconify } from '../iconify';

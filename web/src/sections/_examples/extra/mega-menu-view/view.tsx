@@ -1,3 +1,5 @@
+'use client';
+
 import { DemoMegaMenuMobile } from './mobile';
 import { ComponentLayout } from '../../layout';
 import { DemoMegaMenuVertical } from './vertical';

@@ -1,3 +1,5 @@
+'use client';
+
 import type { Theme } from '@mui/material/styles';
 import type { ThemeProviderProps as MuiThemeProviderProps } from '@mui/material/styles/ThemeProvider';
 
