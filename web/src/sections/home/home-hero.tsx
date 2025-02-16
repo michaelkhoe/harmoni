@@ -299,9 +299,9 @@ export function HomeHero({ sx, ...other }: BoxProps) {
             <m.div style={{ y: y2 }}>{renderText()}</m.div>
           </Stack>
 
-          <m.div style={{ y: y3 }}>{renderRatings()}</m.div>
-          <m.div style={{ y: y4 }}>{renderButtons()}</m.div>
-          <m.div style={{ y: y5 }}>{renderIcons()}</m.div>
+          {/* <m.div style={{ y: y3 }}>{renderRatings()}</m.div> */}
+          {/* <m.div style={{ y: y4 }}>{renderButtons()}</m.div> */}
+          {/* <m.div style={{ y: y5 }}>{renderIcons()}</m.div> */}
         </Container>
 
         <HeroBackground />

@@ -101,10 +101,10 @@ export function MainLayout({
             <SettingsButton />
 
             {/** @slot Sign in button */}
-            <SignInButton />
+            {/* <SignInButton /> */}
 
             {/** @slot Purchase button */}
-            <Button
+            {/* <Button
               variant="contained"
               rel="noopener"
               target="_blank"
@@ -115,7 +115,7 @@ export function MainLayout({
               })}
             >
               Purchase
-            </Button>
+            </Button> */}
           </Box>
         </>
       ),
