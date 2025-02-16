@@ -178,74 +178,74 @@ export const navData: NavSectionProps['data'] = [
         roles: ['admin', 'manager'],
         caption: 'Only admin can see this item',
       },
-      {
-        title: 'Level',
-        path: '#/dashboard/menu_level',
-        icon: ICONS.menuItem,
-        children: [
-          {
-            title: 'Level 1a',
-            path: '#/dashboard/menu_level/menu_level_1a',
-            children: [
-              { title: 'Level 2a', path: '#/dashboard/menu_level/menu_level_1a/menu_level_2a' },
-              {
-                title: 'Level 2b',
-                path: '#/dashboard/menu_level/menu_level_1a/menu_level_2b',
-                children: [
-                  {
-                    title: 'Level 3a',
-                    path: '#/dashboard/menu_level/menu_level_1a/menu_level_2b/menu_level_3a',
-                  },
-                  {
-                    title: 'Level 3b',
-                    path: '#/dashboard/menu_level/menu_level_1a/menu_level_2b/menu_level_3b',
-                  },
-                ],
-              },
-            ],
-          },
-          { title: 'Level 1b', path: '#/dashboard/menu_level/menu_level_1b' },
-        ],
-      },
-      {
-        title: 'Disabled',
-        path: '#disabled',
-        icon: ICONS.disabled,
-        disabled: true,
-      },
-      {
-        title: 'Label',
-        path: '#label',
-        icon: ICONS.label,
-        info: (
-          <Label
-            color="info"
-            variant="inverted"
-            startIcon={<Iconify icon="solar:bell-bing-bold-duotone" />}
-          >
-            NEW
-          </Label>
-        ),
-      },
-      {
-        title: 'Caption',
-        path: '#caption',
-        icon: ICONS.menuItem,
-        caption:
-          'Quisque malesuada placerat nisl. In hac habitasse platea dictumst. Cras id dui. Pellentesque commodo eros a enim. Morbi mollis tellus ac sapien.',
-      },
-      {
-        title: 'Params',
-        path: '/dashboard/params?id=e99f09a7-dd88-49d5-b1c8-1daf80c2d7b1',
-        icon: ICONS.parameter,
-      },
-      {
-        title: 'External link',
-        path: 'https://www.google.com/',
-        icon: ICONS.external,
-        info: <Iconify width={18} icon="prime:external-link" />,
-      },
-      { title: 'Blank', path: paths.dashboard.blank, icon: ICONS.blank },
+      // {
+      //   title: 'Level',
+      //   path: '#/dashboard/menu_level',
+      //   icon: ICONS.menuItem,
+      //   children: [
+      //     {
+      //       title: 'Level 1a',
+      //       path: '#/dashboard/menu_level/menu_level_1a',
+      //       children: [
+      //         { title: 'Level 2a', path: '#/dashboard/menu_level/menu_level_1a/menu_level_2a' },
+      //         {
+      //           title: 'Level 2b',
+      //           path: '#/dashboard/menu_level/menu_level_1a/menu_level_2b',
+      //           children: [
+      //             {
+      //               title: 'Level 3a',
+      //               path: '#/dashboard/menu_level/menu_level_1a/menu_level_2b/menu_level_3a',
+      //             },
+      //             {
+      //               title: 'Level 3b',
+      //               path: '#/dashboard/menu_level/menu_level_1a/menu_level_2b/menu_level_3b',
+      //             },
+      //           ],
+      //         },
+      //       ],
+      //     },
+      //     { title: 'Level 1b', path: '#/dashboard/menu_level/menu_level_1b' },
+      //   ],
+      // },
+      // {
+      //   title: 'Disabled',
+      //   path: '#disabled',
+      //   icon: ICONS.disabled,
+      //   disabled: true,
+      // },
+      // {
+      //   title: 'Label',
+      //   path: '#label',
+      //   icon: ICONS.label,
+      //   info: (
+      //     <Label
+      //       color="info"
+      //       variant="inverted"
+      //       startIcon={<Iconify icon="solar:bell-bing-bold-duotone" />}
+      //     >
+      //       NEW
+      //     </Label>
+      //   ),
+      // },
+      // {
+      //   title: 'Caption',
+      //   path: '#caption',
+      //   icon: ICONS.menuItem,
+      //   caption:
+      //     'Quisque malesuada placerat nisl. In hac habitasse platea dictumst. Cras id dui. Pellentesque commodo eros a enim. Morbi mollis tellus ac sapien.',
+      // },
+      // {
+      //   title: 'Params',
+      //   path: '/dashboard/params?id=e99f09a7-dd88-49d5-b1c8-1daf80c2d7b1',
+      //   icon: ICONS.parameter,
+      // },
+      // {
+      //   title: 'External link',
+      //   path: 'https://www.google.com/',
+      //   icon: ICONS.external,
+      //   info: <Iconify width={18} icon="prime:external-link" />,
+      // },
+      // { title: 'Blank', path: paths.dashboard.blank, icon: ICONS.blank },
     ],
   },
 ];
