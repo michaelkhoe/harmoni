@@ -24,11 +24,12 @@ export default async function Page({ params }: Props) {
 // ----------------------------------------------------------------------
 
 async function getProduct(id: string) {
-  const URL = id ? `${endpoints.product.details}?productId=${id}` : '';
-
-  const res = await axios.get(URL);
-
-  return res.data;
+  // Mock implementation for development
+  const { productMockAPI } = await import('src/actions/product-mock');
+  const products = productMockAPI.getAll();
+  const product = products.find((prod) => prod.id === id);
+  
+  return { product };
 }
 
 /**
@@ -45,9 +46,11 @@ export { dynamic };
  */
 export async function generateStaticParams() {
   if (CONFIG.isStaticExport) {
-    const res = await axios.get(endpoints.product.list);
+    // Mock implementation for development
+    const { productMockAPI } = await import('src/actions/product-mock');
+    const products = productMockAPI.getAll();
 
-    return res.data.products.map((product: { id: string }) => ({ id: product.id }));
+    return products.map((product: { id: string }) => ({ id: product.id }));
   }
   return [];
 }

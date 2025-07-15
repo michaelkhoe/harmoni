@@ -43,6 +43,7 @@ export function SignOutButton({ onClose, sx, ...other }: Props) {
 
       onClose?.();
       router.refresh();
+      router.replace('/auth/jwt/sign-in');
     } catch (error) {
       console.error(error);
       toast.error('Unable to logout!');

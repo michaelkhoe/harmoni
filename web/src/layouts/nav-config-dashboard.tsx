@@ -52,7 +52,7 @@ export const navData: NavSectionProps['data'] = [
   {
     subheader: 'Overview',
     items: [
-      { title: 'App', path: paths.dashboard.root, icon: ICONS.dashboard },
+      // { title: 'App', path: paths.dashboard.root, icon: ICONS.dashboard },
       // { title: 'Ecommerce', path: paths.dashboard.general.ecommerce, icon: ICONS.ecommerce },
       { title: 'Analytics', path: paths.dashboard.general.analytics, icon: ICONS.analytics },
       // { title: 'Banking', path: paths.dashboard.general.banking, icon: ICONS.banking },
@@ -78,6 +78,17 @@ export const navData: NavSectionProps['data'] = [
           { title: 'Create', path: paths.dashboard.user.new },
           { title: 'Edit', path: paths.dashboard.user.demo.edit },
           { title: 'Account', path: paths.dashboard.user.account },
+        ],
+      },
+      {
+        title: 'Category',
+        path: paths.dashboard.category.root,
+        icon: ICONS.ecommerce,
+        children: [
+          { title: 'List', path: paths.dashboard.category.root },
+          { title: 'Details', path: paths.dashboard.category.demo.details },
+          { title: 'Create', path: paths.dashboard.category.new },
+          { title: 'Edit', path: paths.dashboard.category.demo.edit },
         ],
       },
       {
@@ -157,7 +168,7 @@ export const navData: NavSectionProps['data'] = [
       // },
       // { title: 'Chat', path: paths.dashboard.chat, icon: ICONS.chat },
       { title: 'Calendar', path: paths.dashboard.calendar, icon: ICONS.calendar },
-      { title: 'Kanban', path: paths.dashboard.kanban, icon: ICONS.kanban },
+      // { title: 'Kanban', path: paths.dashboard.kanban, icon: ICONS.kanban },
     ],
   },
   /**

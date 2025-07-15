@@ -91,8 +91,6 @@ export function UserNewEditForm({ currentUser }: Props) {
     formState: { isSubmitting },
   } = methods;
 
-  const values = watch();
-
   const onSubmit = handleSubmit(async (data) => {
     try {
       await new Promise((resolve) => setTimeout(resolve, 500));
@@ -113,13 +111,13 @@ export function UserNewEditForm({ currentUser }: Props) {
             {currentUser && (
               <Label
                 color={
-                  (values.status === 'active' && 'success') ||
-                  (values.status === 'banned' && 'error') ||
+                  (watch('status') === 'active' && 'success') ||
+                  (watch('status') === 'banned' && 'error') ||
                   'warning'
                 }
                 sx={{ position: 'absolute', top: 24, right: 24 }}
               >
-                {values.status}
+                {watch('status')}
               </Label>
             )}
 

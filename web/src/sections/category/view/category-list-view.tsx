@@ -2,7 +2,7 @@
 
 import type { Theme, SxProps } from '@mui/material/styles';
 import type { UseSetStateReturn } from 'minimal-shared/hooks';
-import type { IProductItem, IProductTableFilters } from 'src/types/product';
+import type { ICategoryItem, ICategoryTableFilters } from 'src/types/category';
 import type {
   GridColDef,
   GridSlotProps,
@@ -34,15 +34,14 @@ import {
 import { paths } from 'src/routes/paths';
 import { RouterLink } from 'src/routes/components';
 
-  import { DashboardContent } from 'src/layouts/dashboard';
-  import { useGetProducts, productMockAPI } from 'src/actions/product-mock';
+import { useGetCategories, categoryMockAPI } from 'src/actions/category-mock';
+import { DashboardContent } from 'src/layouts/dashboard';
 
+import { toast } from 'src/components/snackbar';
+import { Iconify } from 'src/components/iconify';
+import { EmptyContent } from 'src/components/empty-content';
 import { ConfirmDialog } from 'src/components/custom-dialog';
 import { CustomBreadcrumbs } from 'src/components/custom-breadcrumbs';
-import { EmptyContent } from 'src/components/empty-content';
-import { Iconify } from 'src/components/iconify';
-import { Image } from 'src/components/image';
-import { toast } from 'src/components/snackbar';
 
 // ----------------------------------------------------------------------
 
@@ -57,32 +56,32 @@ const HIDE_COLUMNS_TOGGLABLE = ['id', 'actions'];
 
 // ----------------------------------------------------------------------
 
-export function ProductListView() {
+export function CategoryListView() {
   const confirmDialog = useBoolean();
 
-  const { products, productsLoading } = useGetProducts();
+  const { categories, categoriesLoading } = useGetCategories();
 
-  const [tableData, setTableData] = useState<IProductItem[]>(products);
+  const [tableData, setTableData] = useState<ICategoryItem[]>(categories);
   const [refreshKey, setRefreshKey] = useState(0);
   const [selectedRowIds, setSelectedRowIds] = useState<GridRowSelectionModel>([]);
   const [filterButtonEl, setFilterButtonEl] = useState<HTMLButtonElement | null>(null);
 
-  const filters = useSetState<IProductTableFilters>({ publish: [], stock: [], category: [] });
+  const filters = useSetState<ICategoryTableFilters>({ publish: [] });
   const { state: currentFilters } = filters;
 
   const [columnVisibilityModel, setColumnVisibilityModel] =
     useState<GridColumnVisibilityModel>(HIDE_COLUMNS);
 
   useEffect(() => {
-    const currentProducts = productMockAPI.getAll();
-    setTableData(currentProducts);
+    const currentCategories = categoryMockAPI.getAll();
+    setTableData(currentCategories);
   }, [refreshKey]);
 
   const handleRefresh = useCallback(() => {
     setRefreshKey((prev) => prev + 1);
   }, []);
 
-  const canReset = currentFilters.publish.length > 0 || currentFilters.stock.length > 0 || currentFilters.category.length > 0;
+  const canReset = currentFilters.publish.length > 0;
 
   const dataFiltered = applyFilter({
     inputData: tableData,
@@ -91,27 +90,27 @@ export function ProductListView() {
 
   const handleDeleteRow = useCallback(
     (id: string) => {
-      const success = productMockAPI.delete(id);
+      const success = categoryMockAPI.delete(id);
       
       if (success) {
         handleRefresh();
-        toast.success('Product deleted successfully!');
+        toast.success('Category deleted successfully!');
       } else {
-        toast.error('Failed to delete product');
+        toast.error('Failed to delete category');
       }
     },
     [handleRefresh]
   );
 
   const handleDeleteRows = useCallback(() => {
-    const deletedCount = productMockAPI.deleteMany(selectedRowIds as string[]);
+    const deletedCount = categoryMockAPI.deleteMany(selectedRowIds as string[]);
     
     if (deletedCount > 0) {
       handleRefresh();
       setSelectedRowIds([]);
-      toast.success(`${deletedCount} products deleted successfully!`);
+      toast.success(`${deletedCount} categories deleted successfully!`);
     } else {
-      toast.error('Failed to delete products');
+      toast.error('Failed to delete categories');
     }
   }, [selectedRowIds, handleRefresh]);
 
@@ -133,37 +132,15 @@ export function ProductListView() {
   const columns: GridColDef[] = [
     { field: 'id', headerName: 'ID', width: 90 },
     {
-      field: 'coverUrl',
-      headerName: 'Image',
-      width: 80,
-      hideable: false,
-      sortable: false,
-      filterable: false,
-      disableColumnMenu: true,
-      renderCell: (params) => (
-        <Box sx={{ p: 1 }}>
-          <Image
-            src={params.row.coverUrl}
-            sx={{
-              width: 48,
-              height: 48,
-              borderRadius: 1,
-              objectFit: 'cover',
-            }}
-          />
-        </Box>
-      ),
-    },
-    {
       field: 'name',
-      headerName: 'Product Name',
+      headerName: 'Category Name',
       flex: 1,
       minWidth: 240,
       hideable: false,
       renderCell: (params) => (
         <Link
           component={RouterLink}
-          href={paths.dashboard.product.details(params.row.id)}
+          href={paths.dashboard.category.details(params.row.id)}
           color="inherit"
           variant="subtitle2"
           underline="hover"
@@ -174,51 +151,13 @@ export function ProductListView() {
       ),
     },
     {
-      field: 'category',
-      headerName: 'Category',
-      width: 150,
+      field: 'description',
+      headerName: 'Description',
+      flex: 2,
       renderCell: (params) => (
         <Box sx={{ color: 'text.secondary' }}>
-          {params.row.category || 'Uncategorized'}
-        </Box>
-      ),
-    },
-    {
-      field: 'price',
-      headerName: 'Price',
-      width: 120,
-      renderCell: (params) => (
-        <Box sx={{ fontWeight: 'medium' }}>
-          ${params.row.price?.toFixed(2) || '0.00'}
-        </Box>
-      ),
-    },
-    {
-      field: 'priceSale',
-      headerName: 'Sale Price',
-      width: 120,
-      renderCell: (params) => (
-        <Box sx={{ 
-          fontWeight: 'medium',
-          color: params.row.priceSale ? 'error.main' : 'text.disabled'
-        }}>
-          {params.row.priceSale ? `$${params.row.priceSale.toFixed(2)}` : '-'}
-        </Box>
-      ),
-    },
-    {
-      field: 'available',
-      headerName: 'Stock',
-      width: 110,
-      renderCell: (params) => (
-        <Box
-          sx={{
-            color: params.row.available > 10 ? 'success.main' : 
-                   params.row.available > 0 ? 'warning.main' : 'error.main',
-            fontWeight: 'medium',
-          }}
-        >
-          {params.row.available || 0}
+          {params.row.description?.substring(0, 100)}
+          {params.row.description?.length > 100 && '...'}
         </Box>
       ),
     },
@@ -241,12 +180,35 @@ export function ProductListView() {
       ),
     },
     {
+      field: 'isActive',
+      headerName: 'Status',
+      width: 110,
+      renderCell: (params) => (
+        <Box
+          sx={{
+            color: params.row.isActive ? 'success.main' : 'error.main',
+            fontWeight: 'medium',
+          }}
+        >
+          {params.row.isActive ? 'Active' : 'Inactive'}
+        </Box>
+      ),
+    },
+    {
       field: 'createdAt',
       headerName: 'Created At',
       type: 'dateTime',
       width: 180,
       valueGetter: (params) => params.row?.createdAt ? new Date(params.row.createdAt) : null,
       renderCell: (params) => params.row?.createdAt ? new Date(params.row.createdAt).toLocaleDateString() : '-',
+    },
+    {
+      field: 'updatedAt',
+      headerName: 'Updated At',
+      type: 'dateTime',
+      width: 180,
+      valueGetter: (params) => params.row?.updatedAt ? new Date(params.row.updatedAt) : null,
+      renderCell: (params) => params.row?.updatedAt ? new Date(params.row.updatedAt).toLocaleDateString() : '-',
     },
     {
       type: 'actions',
@@ -298,17 +260,17 @@ export function ProductListView() {
           heading="List"
           links={[
             { name: 'Dashboard', href: paths.dashboard.root },
-            { name: 'Product', href: paths.dashboard.product.root },
+            { name: 'Category', href: paths.dashboard.category.root },
             { name: 'List' },
           ]}
           action={
             <Button
               component={RouterLink}
-              href={paths.dashboard.product.new}
+              href={paths.dashboard.category.new}
               variant="contained"
               startIcon={<Iconify icon="mingcute:add-line" />}
             >
-              New product
+              New category
             </Button>
           }
           sx={{ mb: { xs: 3, md: 5 } }}
@@ -328,7 +290,7 @@ export function ProductListView() {
             disableRowSelectionOnClick
             rows={dataFiltered}
             columns={columns}
-            loading={productsLoading}
+            loading={categoriesLoading}
             getRowHeight={() => 'auto'}
             pageSizeOptions={[5, 10, 20, { value: -1, label: 'All' }]}
             initialState={{ pagination: { paginationModel: { pageSize: 10 } } }}
@@ -383,7 +345,7 @@ type CustomToolbarProps = {
   filteredResults: number;
   selectedRowIds: GridRowSelectionModel;
   onOpenConfirmDeleteRows: () => void;
-  filters: UseSetStateReturn<IProductTableFilters>;
+  filters: UseSetStateReturn<ICategoryTableFilters>;
   setFilterButtonEl: React.Dispatch<React.SetStateAction<HTMLButtonElement | null>>;
 };
 
@@ -415,40 +377,16 @@ const CustomToolbar = forwardRef<HTMLDivElement, CustomToolbarProps>(
 // ----------------------------------------------------------------------
 
 type ApplyFilterProps = {
-  inputData: IProductItem[];
-  filters: IProductTableFilters;
+  inputData: ICategoryItem[];
+  filters: ICategoryTableFilters;
 };
 
-function applyFilter({ inputData, filters }: ApplyFilterProps) {
-  const { publish, stock, category } = filters;
+function applyFilter({ inputData, filters }: ApplyFilterProps): ICategoryItem[] {
+  const { publish } = filters;
 
-  let filteredData = inputData;
-
-  // Filter by publish status
   if (publish.length) {
-    filteredData = filteredData.filter((product) => publish.includes(product.publish));
+    inputData = inputData.filter((category) => publish.includes(category.publish));
   }
 
-  // Filter by stock status
-  if (stock.length) {
-    filteredData = filteredData.filter((product) => {
-      if (stock.includes('in_stock')) {
-        return product.available > 0;
-      }
-      if (stock.includes('low_stock')) {
-        return product.available > 0 && product.available <= 10;
-      }
-      if (stock.includes('out_of_stock')) {
-        return product.available === 0;
-      }
-      return true;
-    });
-  }
-
-  // Filter by category
-  if (category.length) {
-    filteredData = filteredData.filter((product) => category.includes(product.category));
-  }
-
-  return filteredData;
-}
+  return inputData;
+} 

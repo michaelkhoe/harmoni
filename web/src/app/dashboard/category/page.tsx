@@ -2,12 +2,12 @@ import type { Metadata } from 'next';
 
 import { CONFIG } from 'src/global-config';
 
-import { ProductListView } from 'src/sections/product/view';
+import { CategoryListView } from 'src/sections/category/view';
 
 // ----------------------------------------------------------------------
 
-export const metadata: Metadata = { title: `Products | Dashboard - ${CONFIG.appName}` };
+export const metadata: Metadata = { title: `Categories | Dashboard - ${CONFIG.appName}` };
 
 export default function Page() {
-  return <ProductListView />;
+  return <CategoryListView />;
 }

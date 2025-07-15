@@ -84,8 +84,6 @@ export function PostNewEditForm({ currentPost }: Props) {
     formState: { isSubmitting, isValid },
   } = methods;
 
-  const values = watch();
-
   const onSubmit = handleSubmit(async (data) => {
     try {
       await new Promise((resolve) => setTimeout(resolve, 500));
@@ -247,17 +245,17 @@ export function PostNewEditForm({ currentPost }: Props) {
         {renderActions()}
       </Stack>
 
-      <PostDetailsPreview
-        isValid={isValid}
-        onSubmit={onSubmit}
-        title={values.title}
-        open={showPreview.value}
-        content={values.content}
-        onClose={showPreview.onFalse}
-        coverUrl={values.coverUrl}
-        isSubmitting={isSubmitting}
-        description={values.description}
-      />
+              <PostDetailsPreview
+          isValid={isValid}
+          onSubmit={onSubmit}
+          title={watch('title')}
+          open={showPreview.value}
+          content={watch('content')}
+          onClose={showPreview.onFalse}
+          coverUrl={watch('coverUrl')}
+          isSubmitting={isSubmitting}
+          description={watch('description')}
+        />
     </Form>
   );
 }

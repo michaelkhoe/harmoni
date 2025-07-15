@@ -1,9 +1,9 @@
 import type { IProductItem } from 'src/types/product';
 
 import { z as zod } from 'zod';
-import { useForm } from 'react-hook-form';
-import { useState, useCallback } from 'react';
+import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useState, useCallback, useMemo } from 'react';
 
 import Box from '@mui/material/Box';
 import Chip from '@mui/material/Chip';
@@ -20,12 +20,13 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import { paths } from 'src/routes/paths';
 import { useRouter } from 'src/routes/hooks';
 
+import { productMockAPI } from 'src/actions/product-mock';
+import { useGetCategories } from 'src/actions/category-mock';
 import {
   _tags,
   PRODUCT_SIZE_OPTIONS,
   PRODUCT_GENDER_OPTIONS,
   PRODUCT_COLOR_NAME_OPTIONS,
-  PRODUCT_CATEGORY_GROUP_OPTIONS,
 } from 'src/_mock';
 
 import { toast } from 'src/components/snackbar';
@@ -47,7 +48,6 @@ export const NewProductSchema = zod.object({
   quantity: schemaHelper.nullableInput(
     zod.number({ coerce: true }).min(1, { message: 'Quantity is required!' }),
     {
-      // message for null value
       message: 'Quantity is required!',
     }
   ),
@@ -58,12 +58,10 @@ export const NewProductSchema = zod.object({
   price: schemaHelper.nullableInput(
     zod.number({ coerce: true }).min(1, { message: 'Price is required!' }),
     {
-      // message for null value
       message: 'Price is required!',
     }
   ),
-  // Not required
-  category: zod.string(),
+  category: zod.string().min(1, { message: 'Category is required!' }),
   subDescription: zod.string(),
   taxes: zod.number({ coerce: true }).nullable(),
   priceSale: zod.number({ coerce: true }).nullable(),
@@ -79,10 +77,11 @@ type Props = {
 
 export function ProductNewEditForm({ currentProduct }: Props) {
   const router = useRouter();
+  const { categories } = useGetCategories();
 
   const [includeTaxes, setIncludeTaxes] = useState(false);
 
-  const defaultValues: NewProductSchemaType = {
+  const defaultValues: NewProductSchemaType = useMemo(() => ({
     name: '',
     description: '',
     subDescription: '',
@@ -96,12 +95,12 @@ export function ProductNewEditForm({ currentProduct }: Props) {
     quantity: null,
     tags: [],
     gender: [],
-    category: PRODUCT_CATEGORY_GROUP_OPTIONS[0].classify[1],
+    category: categories?.[0]?.name || '',
     colors: [],
     sizes: [],
     newLabel: { enabled: false, content: '' },
     saleLabel: { enabled: false, content: '' },
-  };
+  }), [categories]);
 
   const methods = useForm<NewProductSchemaType>({
     resolver: zodResolver(NewProductSchema),
@@ -111,37 +110,57 @@ export function ProductNewEditForm({ currentProduct }: Props) {
 
   const {
     reset,
-    watch,
     setValue,
+    getValues,
     handleSubmit,
     formState: { isSubmitting },
   } = methods;
 
-  const values = watch();
-
   const onSubmit = handleSubmit(async (data) => {
-    const updatedData = {
-      ...data,
-      taxes: includeTaxes ? defaultValues.taxes : data.taxes,
-    };
-
     try {
       await new Promise((resolve) => setTimeout(resolve, 500));
+      
+      // Handle file upload - convert File to URL string for images
+      const processedImages = data.images && Array.isArray(data.images) 
+        ? data.images.map((file: any) => 
+            file instanceof File ? URL.createObjectURL(file) : file
+          )
+        : data.images || [];
+      
+      const processedData = {
+        ...data,
+        images: processedImages as string[],
+        coverUrl: (processedImages && processedImages.length > 0 ? processedImages[0] : '') as string,
+        price: data.price || 0,
+        quantity: data.quantity || 0,
+        taxes: data.taxes || 0,
+      };
+      
+      if (currentProduct) {
+        // Update existing product
+        productMockAPI.update(currentProduct.id, processedData);
+        toast.success('Product updated successfully!');
+      } else {
+        // Create new product
+        productMockAPI.create(processedData);
+        toast.success('Product created successfully!');
+      }
+      
       reset();
-      toast.success(currentProduct ? 'Update success!' : 'Create success!');
       router.push(paths.dashboard.product.root);
-      console.info('DATA', updatedData);
     } catch (error) {
-      console.error(error);
+      console.error('Error saving product:', error);
+      toast.error('Failed to save product');
     }
   });
 
   const handleRemoveFile = useCallback(
     (inputFile: File | string) => {
-      const filtered = values.images && values.images?.filter((file) => file !== inputFile);
+      const currentImages = getValues('images') || [];
+      const filtered = currentImages.filter((file) => file !== inputFile);
       setValue('images', filtered);
     },
-    [setValue, values.images]
+    [setValue, getValues]
   );
 
   const handleRemoveAllFiles = useCallback(() => {
@@ -223,14 +242,11 @@ export function ProductNewEditForm({ currentProduct }: Props) {
               inputLabel: { shrink: true },
             }}
           >
-            {PRODUCT_CATEGORY_GROUP_OPTIONS.map((category) => (
-              <optgroup key={category.group} label={category.group}>
-                {category.classify.map((classify) => (
-                  <option key={classify} value={classify}>
-                    {classify}
-                  </option>
-                ))}
-              </optgroup>
+            <option value="">Select Category</option>
+            {categories.map((category) => (
+              <option key={category.id} value={category.name}>
+                {category.name}
+              </option>
             ))}
           </Field.Select>
 
@@ -285,7 +301,6 @@ export function ProductNewEditForm({ currentProduct }: Props) {
             name="saleLabel.content"
             label="Sale label"
             fullWidth
-            disabled={!values.saleLabel.enabled}
           />
         </Box>
 
@@ -295,7 +310,6 @@ export function ProductNewEditForm({ currentProduct }: Props) {
             name="newLabel.content"
             label="New label"
             fullWidth
-            disabled={!values.newLabel.enabled}
           />
         </Box>
       </Stack>

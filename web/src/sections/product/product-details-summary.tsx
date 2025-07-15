@@ -1,7 +1,7 @@
 import type { IProductItem } from 'src/types/product';
-import type { CheckoutContextValue } from 'src/types/checkout';
+import type { ICheckoutItem, CheckoutContextValue } from 'src/types/checkout';
 
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 
 import Box from '@mui/material/Box';
@@ -60,37 +60,40 @@ export function ProductDetailsSummary({
     subDescription,
   } = product;
 
-  const existProduct = !!items?.length && items.map((item) => item.id).includes(id);
+  const existProduct = useMemo(
+    () => !!items?.length && items.some((item) => item.id === id),
+    [items, id]
+  );
 
-  const isMaxQuantity =
-    !!items?.length &&
-    items.filter((item) => item.id === id).map((item) => item.quantity)[0] >= available;
+  const isMaxQuantity = useMemo(() => {
+    if (!items?.length) return false;
+    const existingItem = items.find((item) => item.id === id);
+    return existingItem ? existingItem.quantity >= available : false;
+  }, [items, id, available]);
 
-  const defaultValues = {
+  const defaultValues = useMemo(() => ({
     id,
     name,
     coverUrl,
     available,
     price,
-    colors: colors[0],
-    size: sizes[4],
+    colors: colors?.[0] || '',
+    size: sizes?.[4] || '',
     quantity: available < 1 ? 0 : 1,
-  };
+  }), [id, name, coverUrl, available, price, colors?.[0], sizes?.[4]]);
 
   const methods = useForm<typeof defaultValues>({
     defaultValues,
   });
 
-  const { watch, control, setValue, handleSubmit } = methods;
-
-  const values = watch();
+  const { control, setValue, handleSubmit } = methods;
 
   const onSubmit = handleSubmit(async (data) => {
     console.info('DATA', JSON.stringify(data, null, 2));
 
     try {
       if (!existProduct) {
-        onAddToCart?.({ ...data, colors: [values.colors] });
+        onAddToCart?.({ ...data, colors: [data.colors] });
       }
       router.push(paths.product.checkout);
     } catch (error) {
@@ -100,15 +103,16 @@ export function ProductDetailsSummary({
 
   const handleAddCart = useCallback(() => {
     try {
+      const currentValues = methods.getValues();
       onAddToCart?.({
-        ...values,
-        colors: [values.colors],
-        subtotal: values.price * values.quantity,
+        ...currentValues,
+        colors: [currentValues.colors],
+        subtotal: currentValues.price * currentValues.quantity,
       });
     } catch (error) {
       console.error(error);
     }
-  }, [onAddToCart, values]);
+  }, [onAddToCart, methods]);
 
   const renderPrice = () => (
     <Box sx={{ typography: 'h5' }}>
@@ -215,7 +219,6 @@ export function ProductDetailsSummary({
       <Stack spacing={1}>
         <NumberInput
           hideDivider
-          value={values.quantity}
           onChange={(event, quantity: number) => setValue('quantity', quantity)}
           max={available}
           sx={{ maxWidth: 112 }}

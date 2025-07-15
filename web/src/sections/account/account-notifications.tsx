@@ -50,8 +50,6 @@ export function AccountNotifications({ sx, ...other }: CardProps) {
     formState: { isSubmitting },
   } = methods;
 
-  const values = watch();
-
   const onSubmit = handleSubmit(async (data) => {
     try {
       await new Promise((resolve) => setTimeout(resolve, 500));
@@ -118,7 +116,10 @@ export function AccountNotifications({ sx, ...other }: CardProps) {
                           control={
                             <Switch
                               checked={field.value.includes(item.id)}
-                              onChange={() => field.onChange(getSelected(values.selected, item.id))}
+                              onChange={() => {
+                                const currentSelected = watch('selected') || [];
+                                field.onChange(getSelected(currentSelected, item.id));
+                              }}
                               inputProps={{
                                 id: `${item.label}-switch`,
                                 'aria-label': `${item.label} switch`,
