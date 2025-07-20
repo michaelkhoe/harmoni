@@ -20,7 +20,7 @@ import { CustomPopover } from 'src/components/custom-popover';
 type Props = BoxProps & {
   backHref: string;
   editHref: string;
-  liveHref: string;
+  liveHref?: string;
   publish: string;
   onChangePublish: (newValue: string) => void;
   publishOptions: { value: string; label: string }[];
@@ -83,7 +83,7 @@ export function ProductDetailsToolbar({
 
         <Box sx={{ flexGrow: 1 }} />
 
-        {publish === 'published' && (
+        {publish === 'published' && liveHref && (
           <Tooltip title="Go Live">
             <IconButton component={RouterLink} href={liveHref}>
               <Iconify icon="eva:external-link-fill" />

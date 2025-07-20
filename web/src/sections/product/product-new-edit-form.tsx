@@ -20,11 +20,11 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import { paths } from 'src/routes/paths';
 import { useRouter } from 'src/routes/hooks';
 
-import { productMockAPI } from 'src/actions/product-mock';
-import { useGetCategories } from 'src/actions/category-mock';
 import {
   _tags,
 } from 'src/_mock';
+import { productMockAPI } from 'src/actions/product-mock';
+import { useGetCategories } from 'src/actions/category-mock';
 
 import { toast } from 'src/components/snackbar';
 import { Form, Field, schemaHelper } from 'src/components/hook-form';
@@ -66,6 +66,7 @@ export const NewProductSchema = zod.object({
   category: zod.string().min(1, { message: 'Category is required!' }),
   subDescription: zod.string(),
   taxes: zod.number({ coerce: true }).nullable(),
+  publish: zod.string().optional(),
 });
 
 // ----------------------------------------------------------------------
@@ -79,6 +80,8 @@ export function ProductNewEditForm({ currentProduct }: Props) {
   const { categories } = useGetCategories();
 
   const [includeTaxes, setIncludeTaxes] = useState(false);
+  const [qrCode, setQRCode] = useState<string>(currentProduct?.qrCode || '');
+  const [qrCodeId, setQRCodeId] = useState<string>(currentProduct?.qrCodeId || '');
 
   const defaultValues: NewProductSchemaType = useMemo(() => ({
     name: '',
@@ -96,6 +99,7 @@ export function ProductNewEditForm({ currentProduct }: Props) {
     category: categories?.[0]?.name || '',
     color: '',
     size: '',
+    publish: 'draft',
   }), [categories]);
 
   const methods = useForm<NewProductSchemaType>({
@@ -106,6 +110,7 @@ export function ProductNewEditForm({ currentProduct }: Props) {
 
   const {
     reset,
+    watch,
     setValue,
     getValues,
     handleSubmit,
@@ -123,6 +128,24 @@ export function ProductNewEditForm({ currentProduct }: Props) {
           )
         : data.images || [];
       
+      // Generate QR code if product code and SKU are provided and it's a published product
+      let finalQRCode = qrCode;
+      let finalQRCodeId = qrCodeId;
+      
+      if (data.code && data.sku && data.publish === 'published' && !qrCodeId) {
+        try {
+          const { generateQRCodeId, generateQRCodeDataURL } = await import('src/utils/qr-code');
+          finalQRCodeId = generateQRCodeId(data.code, data.sku);
+          finalQRCode = await generateQRCodeDataURL(finalQRCodeId);
+          setQRCode(finalQRCode);
+          setQRCodeId(finalQRCodeId);
+          toast.success('QR code generated for product!');
+        } catch (error) {
+          console.error('Error generating QR code:', error);
+          toast.warning('Product saved, but QR code generation failed');
+        }
+      }
+      
       const processedData = {
         ...data,
         images: processedImages as string[],
@@ -131,6 +154,8 @@ export function ProductNewEditForm({ currentProduct }: Props) {
         salePrice: data.salePrice || 0,
         quantity: data.quantity || 0,
         taxes: data.taxes || 0,
+        qrCode: finalQRCode || undefined,
+        qrCodeId: finalQRCodeId || undefined,
       };
       
       if (currentProduct) {
@@ -373,6 +398,78 @@ export function ProductNewEditForm({ currentProduct }: Props) {
     </Card>
   );
 
+  const renderQRCode = () => {
+    if (!qrCodeId) {
+      return (
+        <Card>
+          <CardHeader
+            title="Product QR Code"
+            subheader="QR code will be generated when you publish this product"
+            sx={{ mb: 3 }}
+          />
+          <Divider />
+          <Box sx={{ 
+            p: 3,
+            textAlign: 'center', 
+            backgroundColor: 'grey.50',
+            borderRadius: 2,
+            border: '1px dashed',
+            borderColor: 'grey.300',
+            m: 3
+          }}>
+                         <Typography variant="body2" color="text.secondary">
+               Make sure to fill in Product Code and SKU, then set status to &quot;Published&quot; to generate QR code.
+             </Typography>
+          </Box>
+        </Card>
+      );
+    }
+
+    return (
+      <Card>
+        <CardHeader
+          title="Product QR Code"
+          subheader="Generated QR code for this product"
+          sx={{ mb: 3 }}
+        />
+        <Divider />
+        <Box sx={{ p: 3 }}>
+          {qrCode && (
+            <Box sx={{ textAlign: 'center', mb: 3 }}>
+              <img
+                src={qrCode}
+                alt="Product QR Code"
+                style={{
+                  maxWidth: '200px',
+                  width: '100%',
+                  height: 'auto',
+                  border: '1px solid #e0e0e0',
+                  borderRadius: '8px',
+                  boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+                }}
+              />
+            </Box>
+          )}
+          
+          <Box sx={{ 
+            backgroundColor: 'grey.50',
+            p: 2, 
+            borderRadius: 1, 
+            border: '1px solid',
+            borderColor: 'grey.200'
+          }}>
+            <Typography variant="caption" color="text.secondary" display="block" gutterBottom>
+              QR Code ID:
+            </Typography>
+            <Typography variant="body2" sx={{ fontFamily: 'monospace', wordBreak: 'break-all' }}>
+              {qrCodeId}
+            </Typography>
+          </Box>
+        </Box>
+      </Card>
+    );
+  };
+
   const renderActions = () => (
     <Box
       sx={{
@@ -400,6 +497,7 @@ export function ProductNewEditForm({ currentProduct }: Props) {
         {renderDetails()}
         {renderProperties()}
         {renderPricing()}
+        {renderQRCode()}
         {renderActions()}
       </Stack>
     </Form>

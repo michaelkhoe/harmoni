@@ -69,6 +69,7 @@ export const _products: IProductItem[] = [
       { name: '5 star', starCount: 5, reviewCount: 61 },
       { name: '4 star', starCount: 4, reviewCount: 6 },
     ],
+    qrCodeId: 'MBP16-SKU-002-1705123456789-AB12CD',
   },
   {
     id: '3',
@@ -103,6 +104,7 @@ export const _products: IProductItem[] = [
       { name: '4 star', starCount: 4, reviewCount: 25 },
       { name: '3 star', starCount: 3, reviewCount: 8 },
     ],
+    qrCodeId: 'NAM270-SKU-003-1705123556789-CD34EF',
   },
   {
     id: '4',
@@ -136,6 +138,7 @@ export const _products: IProductItem[] = [
       { name: '5 star', starCount: 5, reviewCount: 26 },
       { name: '4 star', starCount: 4, reviewCount: 8 },
     ],
+    qrCodeId: 'MDT001-SKU-004-1705123656789-EF56GH',
   },
   {
     id: '5',

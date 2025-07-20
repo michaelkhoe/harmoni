@@ -53,7 +53,7 @@ const PUBLISH_OPTIONS = [
 
 const HIDE_COLUMNS = { id: false };
 
-const HIDE_COLUMNS_TOGGLABLE = ['id', 'actions'];
+const HIDE_COLUMNS_TOGGLABLE = ['id'];
 
 // ----------------------------------------------------------------------
 

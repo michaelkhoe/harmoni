@@ -45,6 +45,8 @@ export type IProductItem = {
   category: string;
   available: number;
   totalSold: number;
+  qrCode?: string;
+  qrCodeId?: string;
   description: string;
   totalRatings: number;
   totalReviews: number;
