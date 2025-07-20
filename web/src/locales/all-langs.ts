@@ -76,6 +76,16 @@ export const allLangs = [
       components: { ...arSACore.components, ...arSDDataGrid.components },
     },
   },
+  {
+    value: 'id',
+    label: 'Bahasa Indonesia',
+    countryCode: 'ID',
+    adapterLocale: 'id',
+    numberFormat: { code: 'id-ID', currency: 'IDR' },
+    systemValue: {
+      components: {},
+    },
+  },
 ];
 
 /**

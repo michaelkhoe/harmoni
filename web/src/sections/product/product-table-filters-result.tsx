@@ -21,19 +21,17 @@ export function ProductTableFiltersResult({ filters, totalResults, sx }: Props) 
   const handleRemoveStock = useCallback(
     (inputValue: string) => {
       const newValue = currentFilters.stock.filter((item) => item !== inputValue);
-
       updateFilters({ stock: newValue });
     },
-    [updateFilters, currentFilters.stock]
+    [updateFilters]
   );
 
   const handleRemovePublish = useCallback(
     (inputValue: string) => {
       const newValue = currentFilters.publish.filter((item) => item !== inputValue);
-
       updateFilters({ publish: newValue });
     },
-    [updateFilters, currentFilters.publish]
+    [updateFilters]
   );
 
   return (

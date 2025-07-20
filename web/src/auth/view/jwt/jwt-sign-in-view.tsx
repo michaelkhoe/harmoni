@@ -72,6 +72,7 @@ export function JwtSignInView() {
       await checkUserSession?.();
 
       router.refresh();
+      router.replace('/dashboard');
     } catch (error) {
       console.error(error);
       const feedbackMessage = getErrorMessage(error);

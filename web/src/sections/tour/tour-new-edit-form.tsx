@@ -106,9 +106,8 @@ export function TourNewEditForm({ currentTour }: Props) {
     setValue,
     handleSubmit,
     formState: { isSubmitting },
+    getValues,
   } = methods;
-
-  const values = watch();
 
   const onSubmit = handleSubmit(async (data) => {
     try {
@@ -124,10 +123,11 @@ export function TourNewEditForm({ currentTour }: Props) {
 
   const handleRemoveFile = useCallback(
     (inputFile: File | string) => {
-      const filtered = values.images && values.images?.filter((file) => file !== inputFile);
-      setValue('images', filtered, { shouldValidate: true });
+      const currentImages = getValues('images') || [];
+      const filtered = currentImages.filter((file) => file !== inputFile);
+      setValue('images', filtered);
     },
-    [setValue, values.images]
+    [setValue, getValues]
   );
 
   const handleRemoveAllFiles = useCallback(() => {

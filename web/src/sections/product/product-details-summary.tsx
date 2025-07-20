@@ -1,161 +1,77 @@
 import type { IProductItem } from 'src/types/product';
-import type { CheckoutContextValue } from 'src/types/checkout';
 
-import { useCallback } from 'react';
-import { useForm, Controller } from 'react-hook-form';
+import { useMemo, useState, useEffect } from 'react';
 
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
-import Rating from '@mui/material/Rating';
-import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
-import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
-import Link, { linkClasses } from '@mui/material/Link';
-import { formHelperTextClasses } from '@mui/material/FormHelperText';
+import CircularProgress from '@mui/material/CircularProgress';
 
-import { paths } from 'src/routes/paths';
-import { useRouter } from 'src/routes/hooks';
-
-import { fCurrency, fShortenNumber } from 'src/utils/format-number';
-
-import { Label } from 'src/components/label';
-import { Iconify } from 'src/components/iconify';
-import { Form, Field } from 'src/components/hook-form';
-import { ColorPicker } from 'src/components/color-utils';
-import { NumberInput } from 'src/components/number-input';
+import { fCurrency } from 'src/utils/format-number';
+import { generateQRCodeDataURL } from 'src/utils/qr-code';
 
 // ----------------------------------------------------------------------
 
 type Props = {
   product: IProductItem;
-  disableActions?: boolean;
-  items?: CheckoutContextValue['state']['items'];
-  onAddToCart?: CheckoutContextValue['onAddToCart'];
 };
 
 export function ProductDetailsSummary({
-  items,
   product,
-  onAddToCart,
-  disableActions,
   ...other
 }: Props) {
-  const router = useRouter();
-
   const {
-    id,
     name,
-    sizes,
-    price,
-    colors,
-    coverUrl,
-    newLabel,
+    size: productSize,
+    costPrice,
+    salePrice,
+    color: productColor,
     available,
-    priceSale,
-    saleLabel,
-    totalRatings,
-    totalReviews,
     inventoryType,
     subDescription,
   } = product;
 
-  const existProduct = !!items?.length && items.map((item) => item.id).includes(id);
+  const [qrCode, setQRCode] = useState<string>(product.qrCode || '');
+  const [qrCodeId, setQRCodeId] = useState<string>(product.qrCodeId || '');
+  const [isLoadingQRCode, setIsLoadingQRCode] = useState<boolean>(false);
 
-  const isMaxQuantity =
-    !!items?.length &&
-    items.filter((item) => item.id === id).map((item) => item.quantity)[0] >= available;
-
-  const defaultValues = {
-    id,
-    name,
-    coverUrl,
-    available,
-    price,
-    colors: colors[0],
-    size: sizes[4],
-    quantity: available < 1 ? 0 : 1,
-  };
-
-  const methods = useForm<typeof defaultValues>({
-    defaultValues,
-  });
-
-  const { watch, control, setValue, handleSubmit } = methods;
-
-  const values = watch();
-
-  const onSubmit = handleSubmit(async (data) => {
-    console.info('DATA', JSON.stringify(data, null, 2));
-
-    try {
-      if (!existProduct) {
-        onAddToCart?.({ ...data, colors: [values.colors] });
-      }
-      router.push(paths.product.checkout);
-    } catch (error) {
-      console.error(error);
+  // Generate QR code image if we have ID but no image
+  useEffect(() => {
+    if (qrCodeId && !qrCode) {
+      const generateMissingQRCode = async () => {
+        setIsLoadingQRCode(true);
+        try {
+          const generatedQRCode = await generateQRCodeDataURL(qrCodeId);
+          setQRCode(generatedQRCode);
+        } catch (error) {
+          console.error('Error generating QR code for display:', error);
+        } finally {
+          setIsLoadingQRCode(false);
+        }
+      };
+      generateMissingQRCode();
     }
-  });
+  }, [qrCodeId, qrCode]);
 
-  const handleAddCart = useCallback(() => {
-    try {
-      onAddToCart?.({
-        ...values,
-        colors: [values.colors],
-        subtotal: values.price * values.quantity,
-      });
-    } catch (error) {
-      console.error(error);
-    }
-  }, [onAddToCart, values]);
+
 
   const renderPrice = () => (
-    <Box sx={{ typography: 'h5' }}>
-      {priceSale && (
-        <Box
-          component="span"
-          sx={{ color: 'text.disabled', textDecoration: 'line-through', mr: 0.5 }}
-        >
-          {fCurrency(priceSale)}
-        </Box>
-      )}
-
-      {fCurrency(price)}
+    <Box>
+      <Box sx={{ typography: 'h5', color: 'primary.main' }}>
+        {fCurrency(salePrice)}
+      </Box>
+      <Box sx={{ 
+        typography: 'body2', 
+        color: 'text.secondary',
+        mt: 0.5
+      }}>
+        Cost: {fCurrency(costPrice)} • Profit: {fCurrency(salePrice - costPrice)}
+      </Box>
     </Box>
   );
 
-  const renderShare = () => (
-    <Box
-      sx={{
-        gap: 3,
-        display: 'flex',
-        justifyContent: 'center',
-        [`& .${linkClasses.root}`]: {
-          gap: 1,
-          alignItems: 'center',
-          display: 'inline-flex',
-          color: 'text.secondary',
-          typography: 'subtitle2',
-        },
-      }}
-    >
-      <Link>
-        <Iconify icon="mingcute:add-line" width={16} />
-        Compare
-      </Link>
 
-      <Link>
-        <Iconify icon="solar:heart-bold" width={16} />
-        Favorite
-      </Link>
-
-      <Link>
-        <Iconify icon="solar:share-bold" width={16} />
-        Share
-      </Link>
-    </Box>
-  );
 
   const renderColorOptions = () => (
     <Box sx={{ display: 'flex' }}>
@@ -163,18 +79,21 @@ export function ProductDetailsSummary({
         Color
       </Typography>
 
-      <Controller
-        name="colors"
-        control={control}
-        render={({ field }) => (
-          <ColorPicker
-            options={colors}
-            value={field.value}
-            onChange={(color) => field.onChange(color as string)}
-            limit={4}
-          />
-        )}
-      />
+      <Typography 
+        variant="body2" 
+        sx={{ 
+          p: 1.5, 
+          color: 'text.secondary',
+          backgroundColor: 'grey.50',
+          borderRadius: 1,
+          minHeight: 40,
+          display: 'flex',
+          alignItems: 'center',
+          maxWidth: 200
+        }}
+      >
+        {productColor || 'Color not specified'}
+      </Typography>
     </Box>
   );
 
@@ -184,25 +103,23 @@ export function ProductDetailsSummary({
         Size
       </Typography>
 
-      <Field.Select
-        name="size"
-        size="small"
-        helperText={
-          <Link underline="always" color="text.primary">
-            Size chart
-          </Link>
-        }
-        sx={{
-          maxWidth: 88,
-          [`& .${formHelperTextClasses.root}`]: { mx: 0, mt: 1, textAlign: 'right' },
-        }}
-      >
-        {sizes.map((size) => (
-          <MenuItem key={size} value={size}>
-            {size}
-          </MenuItem>
-        ))}
-      </Field.Select>
+      <Box>
+        <Typography 
+          variant="body2" 
+          sx={{ 
+            p: 1.5, 
+            color: 'text.secondary',
+            backgroundColor: 'grey.50',
+            borderRadius: 1,
+            minHeight: 40,
+            display: 'flex',
+            alignItems: 'center',
+            maxWidth: 200
+          }}
+        >
+          {productSize || 'Size not specified'}
+        </Typography>
+      </Box>
     </Box>
   );
 
@@ -212,46 +129,27 @@ export function ProductDetailsSummary({
         Quantity
       </Typography>
 
-      <Stack spacing={1}>
-        <NumberInput
-          hideDivider
-          value={values.quantity}
-          onChange={(event, quantity: number) => setValue('quantity', quantity)}
-          max={available}
-          sx={{ maxWidth: 112 }}
-        />
-
+      <Box>
         <Typography
-          variant="caption"
-          component="div"
-          sx={{ textAlign: 'right', color: 'text.secondary' }}
+          variant="body2"
+          sx={{ 
+            p: 1.5, 
+            color: 'text.secondary',
+            backgroundColor: 'grey.50',
+            borderRadius: 1,
+            minHeight: 40,
+            display: 'flex',
+            alignItems: 'center',
+            fontWeight: 'medium'
+          }}
         >
           Available: {available}
         </Typography>
-      </Stack>
+      </Box>
     </Box>
   );
 
-  const renderActions = () => (
-    <Box sx={{ gap: 2, display: 'flex' }}>
-      <Button
-        fullWidth
-        disabled={isMaxQuantity || disableActions}
-        size="large"
-        color="warning"
-        variant="contained"
-        startIcon={<Iconify icon="solar:cart-plus-bold" width={24} />}
-        onClick={handleAddCart}
-        sx={{ whiteSpace: 'nowrap' }}
-      >
-        Add to cart
-      </Button>
 
-      <Button fullWidth size="large" type="submit" variant="contained" disabled={disableActions}>
-        Buy now
-      </Button>
-    </Box>
-  );
 
   const renderSubDescription = () => (
     <Typography variant="body2" sx={{ color: 'text.secondary' }}>
@@ -259,27 +157,9 @@ export function ProductDetailsSummary({
     </Typography>
   );
 
-  const renderRating = () => (
-    <Box
-      sx={{
-        display: 'flex',
-        typography: 'body2',
-        alignItems: 'center',
-        color: 'text.disabled',
-      }}
-    >
-      <Rating size="small" value={totalRatings} precision={0.1} readOnly sx={{ mr: 1 }} />
-      {`(${fShortenNumber(totalReviews)} reviews)`}
-    </Box>
-  );
 
-  const renderLabels = () =>
-    (newLabel.enabled || saleLabel.enabled) && (
-      <Box sx={{ gap: 1, display: 'flex', alignItems: 'center' }}>
-        {newLabel.enabled && <Label color="info">{newLabel.content}</Label>}
-        {saleLabel.enabled && <Label color="error">{saleLabel.content}</Label>}
-      </Box>
-    );
+
+
 
   const renderInventoryType = () => (
     <Box
@@ -296,16 +176,101 @@ export function ProductDetailsSummary({
     </Box>
   );
 
+  const renderQRCodeSection = () => {
+    if (!qrCodeId) {
+      return (
+        <Box>
+          <Typography variant="h6" gutterBottom>
+            Product QR Code
+          </Typography>
+          <Box sx={{ 
+            textAlign: 'center', 
+            py: 4,
+            backgroundColor: 'grey.50',
+            borderRadius: 2,
+            border: '1px dashed',
+            borderColor: 'grey.300'
+          }}>
+            <Typography variant="body2" color="text.secondary">
+              QR code will be generated when the product is published during creation or editing.
+            </Typography>
+          </Box>
+        </Box>
+      );
+    }
+
+    return (
+      <Box>
+        <Typography variant="h6" gutterBottom>
+          Product QR Code
+        </Typography>
+        
+        <Box sx={{ 
+          p: 3,
+          backgroundColor: 'grey.50',
+          borderRadius: 2,
+                     border: '1px solid',
+           borderColor: 'grey.200'
+         }}>
+           <Box sx={{ textAlign: 'center', mb: 3 }}>
+             {isLoadingQRCode ? (
+               <Box sx={{ py: 4 }}>
+                 <CircularProgress />
+                 <Typography variant="body2" color="text.secondary" sx={{ mt: 2 }}>
+                   Generating QR code...
+                 </Typography>
+               </Box>
+             ) : qrCode ? (
+               <img
+                 src={qrCode}
+                 alt="Product QR Code"
+                 style={{
+                   maxWidth: '200px',
+                   width: '100%',
+                   height: 'auto',
+                   border: '1px solid #e0e0e0',
+                   borderRadius: '8px',
+                   boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+                 }}
+               />
+             ) : (
+               <Typography variant="body2" color="text.secondary">
+                 QR code could not be generated
+               </Typography>
+             )}
+           </Box>
+          
+          <Box sx={{ 
+            backgroundColor: 'white',
+            p: 2, 
+            borderRadius: 1, 
+            mb: 2,
+            border: '1px solid',
+            borderColor: 'grey.200'
+          }}>
+            <Typography variant="caption" color="text.secondary" display="block" gutterBottom>
+              QR Code ID:
+            </Typography>
+            <Typography variant="body2" sx={{ fontFamily: 'monospace', wordBreak: 'break-all' }}>
+              {qrCodeId}
+            </Typography>
+          </Box>
+
+          <Typography variant="caption" color="text.secondary" sx={{ display: 'block', textAlign: 'center' }}>
+            This QR code was generated during product creation and is permanent for this product.
+          </Typography>
+        </Box>
+      </Box>
+    );
+  };
+
   return (
-    <Form methods={methods} onSubmit={onSubmit}>
-      <Stack spacing={3} sx={{ pt: 3 }} {...other}>
+    <Stack spacing={3} sx={{ pt: 3 }} {...other}>
         <Stack spacing={2} alignItems="flex-start">
-          {renderLabels()}
           {renderInventoryType()}
 
           <Typography variant="h5">{name}</Typography>
 
-          {renderRating()}
           {renderPrice()}
           {renderSubDescription()}
         </Stack>
@@ -318,9 +283,7 @@ export function ProductDetailsSummary({
 
         <Divider sx={{ borderStyle: 'dashed' }} />
 
-        {renderActions()}
-        {renderShare()}
+        {renderQRCodeSection()}
       </Stack>
-    </Form>
-  );
-}
+    );
+  }

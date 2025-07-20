@@ -1,7 +1,7 @@
 // ----------------------------------------------------------------------
 
 export const fallbackLng = 'en';
-export const languages = ['en', 'fr', 'vi', 'cn', 'ar'];
+export const languages = ['en', 'fr', 'vi', 'cn', 'ar', 'id'];
 export const defaultNS = 'common';
 export const cookieName = 'i18next';
 
@@ -51,5 +51,10 @@ export const changeLangMessages: Record<
     success: 'تم تغيير اللغة!',
     error: 'خطأ في تغيير اللغة!',
     loading: 'جارٍ التحميل...',
+  },
+  id: {
+    success: 'Bahasa telah diubah!',
+    error: 'Gagal mengubah bahasa!',
+    loading: 'Memuat...',
   },
 };

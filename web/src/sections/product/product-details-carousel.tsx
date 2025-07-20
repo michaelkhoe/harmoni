@@ -1,6 +1,6 @@
 import type { IProductItem } from 'src/types/product';
 
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 
 import Box from '@mui/material/Box';
 
@@ -23,7 +23,7 @@ type Props = {
 export function ProductDetailsCarousel({ images }: Props) {
   const carousel = useCarousel({ thumbs: { slidesToShow: 'auto' } });
 
-  const slides = images?.map((img) => ({ src: img })) || [];
+  const slides = useMemo(() => images?.map((img) => ({ src: img })) || [], [images]);
 
   const lightbox = useLightBox(slides);
 

@@ -34,25 +34,17 @@ import {
 import { paths } from 'src/routes/paths';
 import { RouterLink } from 'src/routes/components';
 
-import { PRODUCT_STOCK_OPTIONS } from 'src/_mock';
-import { useGetProducts } from 'src/actions/product';
-import { DashboardContent } from 'src/layouts/dashboard';
+  import { useTranslate } from 'src/locales';
 
-import { toast } from 'src/components/snackbar';
-import { Iconify } from 'src/components/iconify';
-import { EmptyContent } from 'src/components/empty-content';
+import { DashboardContent } from 'src/layouts/dashboard';
+import { useGetProducts, productMockAPI } from 'src/actions/product-mock';
+
 import { ConfirmDialog } from 'src/components/custom-dialog';
 import { CustomBreadcrumbs } from 'src/components/custom-breadcrumbs';
-
-import { ProductTableToolbar } from '../product-table-toolbar';
-import { ProductTableFiltersResult } from '../product-table-filters-result';
-import {
-  RenderCellStock,
-  RenderCellPrice,
-  RenderCellPublish,
-  RenderCellProduct,
-  RenderCellCreatedAt,
-} from '../product-table-row';
+import { EmptyContent } from 'src/components/empty-content';
+import { Iconify } from 'src/components/iconify';
+import { Image } from 'src/components/image';
+import { toast } from 'src/components/snackbar';
 
 // ----------------------------------------------------------------------
 
@@ -61,34 +53,39 @@ const PUBLISH_OPTIONS = [
   { value: 'draft', label: 'Draft' },
 ];
 
-const HIDE_COLUMNS = { category: false };
+const HIDE_COLUMNS = { id: false };
 
-const HIDE_COLUMNS_TOGGLABLE = ['category', 'actions'];
+const HIDE_COLUMNS_TOGGLABLE = ['id'];
 
 // ----------------------------------------------------------------------
 
 export function ProductListView() {
   const confirmDialog = useBoolean();
+  const { t } = useTranslate('product');
 
   const { products, productsLoading } = useGetProducts();
 
   const [tableData, setTableData] = useState<IProductItem[]>(products);
+  const [refreshKey, setRefreshKey] = useState(0);
   const [selectedRowIds, setSelectedRowIds] = useState<GridRowSelectionModel>([]);
   const [filterButtonEl, setFilterButtonEl] = useState<HTMLButtonElement | null>(null);
 
-  const filters = useSetState<IProductTableFilters>({ publish: [], stock: [] });
+  const filters = useSetState<IProductTableFilters>({ publish: [], stock: [], category: [] });
   const { state: currentFilters } = filters;
 
   const [columnVisibilityModel, setColumnVisibilityModel] =
     useState<GridColumnVisibilityModel>(HIDE_COLUMNS);
 
   useEffect(() => {
-    if (products.length) {
-      setTableData(products);
-    }
-  }, [products]);
+    const currentProducts = productMockAPI.getAll();
+    setTableData(currentProducts);
+  }, [refreshKey]);
 
-  const canReset = currentFilters.publish.length > 0 || currentFilters.stock.length > 0;
+  const handleRefresh = useCallback(() => {
+    setRefreshKey((prev) => prev + 1);
+  }, []);
+
+  const canReset = currentFilters.publish.length > 0 || currentFilters.stock.length > 0 || currentFilters.category.length > 0;
 
   const dataFiltered = applyFilter({
     inputData: tableData,
@@ -97,22 +94,29 @@ export function ProductListView() {
 
   const handleDeleteRow = useCallback(
     (id: string) => {
-      const deleteRow = tableData.filter((row) => row.id !== id);
-
-      toast.success('Delete success!');
-
-      setTableData(deleteRow);
+      const success = productMockAPI.delete(id);
+      
+      if (success) {
+        handleRefresh();
+        toast.success(t('messages.productDeleted'));
+      } else {
+        toast.error(t('messages.deleteError'));
+      }
     },
-    [tableData]
+    [handleRefresh]
   );
 
   const handleDeleteRows = useCallback(() => {
-    const deleteRows = tableData.filter((row) => !selectedRowIds.includes(row.id));
-
-    toast.success('Delete success!');
-
-    setTableData(deleteRows);
-  }, [selectedRowIds, tableData]);
+    const deletedCount = productMockAPI.deleteMany(selectedRowIds as string[]);
+    
+    if (deletedCount > 0) {
+      handleRefresh();
+      setSelectedRowIds([]);
+      toast.success(`${deletedCount} products deleted successfully!`);
+    } else {
+      toast.error('Failed to delete products');
+    }
+  }, [selectedRowIds, handleRefresh]);
 
   const CustomToolbarCallback = useCallback(
     () => (
@@ -130,46 +134,135 @@ export function ProductListView() {
   );
 
   const columns: GridColDef[] = [
-    { field: 'category', headerName: 'Category', filterable: false },
+    { field: 'id', headerName: 'ID', width: 90 },
     {
-      field: 'name',
-      headerName: 'Product',
-      flex: 1,
-      minWidth: 360,
+      field: 'coverUrl',
+      headerName: 'Image',
+      width: 80,
       hideable: false,
+      sortable: false,
+      filterable: false,
+      disableColumnMenu: true,
       renderCell: (params) => (
-        <RenderCellProduct params={params} href={paths.dashboard.product.details(params.row.id)} />
+        <Box sx={{ p: 1 }}>
+          <Image
+            src={params.row.coverUrl}
+            sx={{
+              width: 48,
+              height: 48,
+              borderRadius: 1,
+              objectFit: 'cover',
+            }}
+          />
+        </Box>
       ),
     },
     {
-      field: 'createdAt',
-      headerName: 'Create at',
-      width: 160,
-      renderCell: (params) => <RenderCellCreatedAt params={params} />,
+      field: 'name',
+      headerName: t('table.productName'),
+      flex: 1,
+      minWidth: 240,
+      hideable: false,
+      renderCell: (params) => (
+        <Link
+          component={RouterLink}
+          href={paths.dashboard.product.details(params.row.id)}
+          color="inherit"
+          variant="subtitle2"
+          underline="hover"
+          sx={{ cursor: 'pointer' }}
+        >
+          {params.row.name}
+        </Link>
+      ),
     },
     {
-      field: 'inventoryType',
-      headerName: 'Stock',
-      width: 160,
-      type: 'singleSelect',
-      valueOptions: PRODUCT_STOCK_OPTIONS,
-      renderCell: (params) => <RenderCellStock params={params} />,
+      field: 'category',
+      headerName: t('table.category'),
+      width: 150,
+      renderCell: (params) => (
+        <Box sx={{ color: 'text.secondary' }}>
+          {params.row.category || t('table.uncategorized')}
+        </Box>
+      ),
     },
     {
-      field: 'price',
-      headerName: 'Price',
-      width: 140,
-      editable: true,
-      renderCell: (params) => <RenderCellPrice params={params} />,
+      field: 'costPrice',
+      headerName: t('table.costPrice'),
+      width: 120,
+      renderCell: (params) => (
+        <Box sx={{ fontWeight: 'medium', color: 'text.secondary' }}>
+          ${params.row.costPrice?.toFixed(2) || '0.00'}
+        </Box>
+      ),
+    },
+    {
+      field: 'salePrice',
+      headerName: t('table.salePrice'),
+      width: 120,
+      renderCell: (params) => (
+        <Box sx={{ fontWeight: 'medium', color: 'primary.main' }}>
+          ${params.row.salePrice?.toFixed(2) || '0.00'}
+        </Box>
+      ),
+    },
+    {
+      field: 'profit',
+      headerName: t('table.profit'),
+      width: 100,
+      renderCell: (params) => {
+        const profit = (params.row.salePrice || 0) - (params.row.costPrice || 0);
+        return (
+          <Box sx={{ 
+            fontWeight: 'medium',
+            color: profit > 0 ? 'success.main' : 'error.main'
+          }}>
+            ${profit.toFixed(2)}
+          </Box>
+        );
+      },
+    },
+    {
+      field: 'available',
+      headerName: t('table.stock'),
+      width: 110,
+      renderCell: (params) => (
+        <Box
+          sx={{
+            color: params.row.available > 10 ? 'success.main' : 
+                   params.row.available > 0 ? 'warning.main' : 'error.main',
+            fontWeight: 'medium',
+          }}
+        >
+          {params.row.available || 0}
+        </Box>
+      ),
     },
     {
       field: 'publish',
-      headerName: 'Publish',
+      headerName: t('table.publish'),
       width: 110,
       type: 'singleSelect',
       editable: true,
       valueOptions: PUBLISH_OPTIONS,
-      renderCell: (params) => <RenderCellPublish params={params} />,
+      renderCell: (params) => (
+        <Box
+          sx={{
+            color: params.row.publish === 'published' ? 'success.main' : 'warning.main',
+            fontWeight: 'medium',
+          }}
+        >
+          {params.row.publish}
+        </Box>
+      ),
+    },
+    {
+      field: 'createdAt',
+      headerName: t('table.createdAt'),
+      type: 'dateTime',
+      width: 180,
+      valueGetter: (params) => params.row?.createdAt ? new Date(params.row.createdAt) : null,
+      renderCell: (params) => params.row?.createdAt ? new Date(params.row.createdAt).toLocaleDateString() : '-',
     },
     {
       type: 'actions',
@@ -182,17 +275,21 @@ export function ProductListView() {
       filterable: false,
       disableColumnMenu: true,
       getActions: (params) => [
-        <GridActionsLinkItem
+        <GridActionsCellItem
           showInMenu
           icon={<Iconify icon="solar:eye-bold" />}
           label="View"
-          href={paths.dashboard.product.details(params.row.id)}
+          onClick={() => {
+            // Navigate to view
+          }}
         />,
-        <GridActionsLinkItem
+        <GridActionsCellItem
           showInMenu
           icon={<Iconify icon="solar:pen-bold" />}
-          label="Edit"
-          href={paths.dashboard.product.edit(params.row.id)}
+          label={t('buttons.edit')}
+          onClick={() => {
+            // Navigate to edit
+          }}
         />,
         <GridActionsCellItem
           showInMenu
@@ -210,40 +307,15 @@ export function ProductListView() {
       .filter((column) => !HIDE_COLUMNS_TOGGLABLE.includes(column.field))
       .map((column) => column.field);
 
-  const renderConfirmDialog = () => (
-    <ConfirmDialog
-      open={confirmDialog.value}
-      onClose={confirmDialog.onFalse}
-      title="Delete"
-      content={
-        <>
-          Are you sure want to delete <strong> {selectedRowIds.length} </strong> items?
-        </>
-      }
-      action={
-        <Button
-          variant="contained"
-          color="error"
-          onClick={() => {
-            handleDeleteRows();
-            confirmDialog.onFalse();
-          }}
-        >
-          Delete
-        </Button>
-      }
-    />
-  );
-
   return (
     <>
       <DashboardContent sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
         <CustomBreadcrumbs
-          heading="List"
+          heading={t('headers.productList')}
           links={[
-            { name: 'Dashboard', href: paths.dashboard.root },
-            { name: 'Product', href: paths.dashboard.product.root },
-            { name: 'List' },
+            { name: t('navigation.dashboard'), href: paths.dashboard.root },
+            { name: t('navigation.product'), href: paths.dashboard.product.root },
+            { name: t('navigation.list') },
           ]}
           action={
             <Button
@@ -252,7 +324,7 @@ export function ProductListView() {
               variant="contained"
               startIcon={<Iconify icon="mingcute:add-line" />}
             >
-              New product
+              {t('headers.newProduct')}
             </Button>
           }
           sx={{ mb: { xs: 3, md: 5 } }}
@@ -294,109 +366,66 @@ export function ProductListView() {
         </Card>
       </DashboardContent>
 
-      {renderConfirmDialog()}
+      <ConfirmDialog
+        open={confirmDialog.value}
+        onClose={confirmDialog.onFalse}
+        title="Delete"
+        content={
+          <>
+            Are you sure want to delete <strong> {selectedRowIds.length} </strong> items?
+          </>
+        }
+        action={
+          <Button
+            variant="contained"
+            color="error"
+            onClick={() => {
+              handleDeleteRows();
+              confirmDialog.onFalse();
+            }}
+          >
+            Delete
+          </Button>
+        }
+      />
     </>
   );
 }
 
 // ----------------------------------------------------------------------
 
-declare module '@mui/x-data-grid' {
-  interface ToolbarPropsOverrides {
-    setFilterButtonEl: React.Dispatch<React.SetStateAction<HTMLButtonElement | null>>;
-  }
-}
-
-type CustomToolbarProps = GridSlotProps['toolbar'] & {
+type CustomToolbarProps = {
   canReset: boolean;
   filteredResults: number;
   selectedRowIds: GridRowSelectionModel;
-  filters: UseSetStateReturn<IProductTableFilters>;
-
   onOpenConfirmDeleteRows: () => void;
+  filters: UseSetStateReturn<IProductTableFilters>;
+  setFilterButtonEl: React.Dispatch<React.SetStateAction<HTMLButtonElement | null>>;
 };
 
-function CustomToolbar({
-  filters,
-  canReset,
-  selectedRowIds,
-  filteredResults,
-  setFilterButtonEl,
-  onOpenConfirmDeleteRows,
-}: CustomToolbarProps) {
-  return (
-    <>
-      <GridToolbarContainer>
-        <ProductTableToolbar
-          filters={filters}
-          options={{ stocks: PRODUCT_STOCK_OPTIONS, publishs: PUBLISH_OPTIONS }}
-        />
+const CustomToolbar = forwardRef<HTMLDivElement, CustomToolbarProps>(
+  ({ filters, canReset, selectedRowIds, filteredResults, onOpenConfirmDeleteRows, setFilterButtonEl }, ref) => (
+    <GridToolbarContainer ref={ref}>
+      <GridToolbarQuickFilter />
 
-        <GridToolbarQuickFilter />
+      <Box sx={{ flexGrow: 1 }} />
 
-        <Box
-          sx={{
-            gap: 1,
-            flexGrow: 1,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'flex-end',
-          }}
+      {!!selectedRowIds.length && (
+        <Button
+          size="small"
+          color="error"
+          startIcon={<Iconify icon="solar:trash-bin-trash-bold" />}
+          onClick={onOpenConfirmDeleteRows}
         >
-          {!!selectedRowIds.length && (
-            <Button
-              size="small"
-              color="error"
-              startIcon={<Iconify icon="solar:trash-bin-trash-bold" />}
-              onClick={onOpenConfirmDeleteRows}
-            >
-              Delete ({selectedRowIds.length})
-            </Button>
-          )}
-
-          <GridToolbarColumnsButton />
-          <GridToolbarFilterButton ref={setFilterButtonEl} />
-          <GridToolbarExport />
-        </Box>
-      </GridToolbarContainer>
-
-      {canReset && (
-        <ProductTableFiltersResult
-          filters={filters}
-          totalResults={filteredResults}
-          sx={{ p: 2.5, pt: 0 }}
-        />
+          Delete ({selectedRowIds.length})
+        </Button>
       )}
-    </>
-  );
-}
 
-// ----------------------------------------------------------------------
-
-type GridActionsLinkItemProps = Pick<GridActionsCellItemProps, 'icon' | 'label' | 'showInMenu'> & {
-  href: string;
-  sx?: SxProps<Theme>;
-};
-
-export const GridActionsLinkItem = forwardRef<HTMLLIElement, GridActionsLinkItemProps>(
-  (props, ref) => {
-    const { href, label, icon, sx } = props;
-
-    return (
-      <MenuItem ref={ref} sx={sx}>
-        <Link
-          component={RouterLink}
-          href={href}
-          underline="none"
-          color="inherit"
-          sx={{ width: 1, display: 'flex', alignItems: 'center' }}
-        >
-          {icon && <ListItemIcon>{icon}</ListItemIcon>}
-          {label}
-        </Link>
-      </MenuItem>
-    );
-  }
+      <GridToolbarColumnsButton />
+      <GridToolbarFilterButton ref={setFilterButtonEl} />
+      <GridToolbarExport />
+    </GridToolbarContainer>
+  )
 );
 
 // ----------------------------------------------------------------------
@@ -407,15 +436,35 @@ type ApplyFilterProps = {
 };
 
 function applyFilter({ inputData, filters }: ApplyFilterProps) {
-  const { stock, publish } = filters;
+  const { publish, stock, category } = filters;
 
-  if (stock.length) {
-    inputData = inputData.filter((product) => stock.includes(product.inventoryType));
-  }
+  let filteredData = inputData;
 
+  // Filter by publish status
   if (publish.length) {
-    inputData = inputData.filter((product) => publish.includes(product.publish));
+    filteredData = filteredData.filter((product) => publish.includes(product.publish));
   }
 
-  return inputData;
+  // Filter by stock status
+  if (stock.length) {
+    filteredData = filteredData.filter((product) => {
+      if (stock.includes('in_stock')) {
+        return product.available > 0;
+      }
+      if (stock.includes('low_stock')) {
+        return product.available > 0 && product.available <= 10;
+      }
+      if (stock.includes('out_of_stock')) {
+        return product.available === 0;
+      }
+      return true;
+    });
+  }
+
+  // Filter by category
+  if (category.length) {
+    filteredData = filteredData.filter((product) => category.includes(product.category));
+  }
+
+  return filteredData;
 }
