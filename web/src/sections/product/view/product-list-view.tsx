@@ -34,8 +34,10 @@ import {
 import { paths } from 'src/routes/paths';
 import { RouterLink } from 'src/routes/components';
 
-  import { DashboardContent } from 'src/layouts/dashboard';
-  import { useGetProducts, productMockAPI } from 'src/actions/product-mock';
+  import { useTranslate } from 'src/locales';
+
+import { DashboardContent } from 'src/layouts/dashboard';
+import { useGetProducts, productMockAPI } from 'src/actions/product-mock';
 
 import { ConfirmDialog } from 'src/components/custom-dialog';
 import { CustomBreadcrumbs } from 'src/components/custom-breadcrumbs';
@@ -59,6 +61,7 @@ const HIDE_COLUMNS_TOGGLABLE = ['id'];
 
 export function ProductListView() {
   const confirmDialog = useBoolean();
+  const { t } = useTranslate('product');
 
   const { products, productsLoading } = useGetProducts();
 
@@ -95,9 +98,9 @@ export function ProductListView() {
       
       if (success) {
         handleRefresh();
-        toast.success('Product deleted successfully!');
+        toast.success(t('messages.productDeleted'));
       } else {
-        toast.error('Failed to delete product');
+        toast.error(t('messages.deleteError'));
       }
     },
     [handleRefresh]
@@ -156,7 +159,7 @@ export function ProductListView() {
     },
     {
       field: 'name',
-      headerName: 'Product Name',
+      headerName: t('table.productName'),
       flex: 1,
       minWidth: 240,
       hideable: false,
@@ -175,17 +178,17 @@ export function ProductListView() {
     },
     {
       field: 'category',
-      headerName: 'Category',
+      headerName: t('table.category'),
       width: 150,
       renderCell: (params) => (
         <Box sx={{ color: 'text.secondary' }}>
-          {params.row.category || 'Uncategorized'}
+          {params.row.category || t('table.uncategorized')}
         </Box>
       ),
     },
     {
       field: 'costPrice',
-      headerName: 'Cost Price',
+      headerName: t('table.costPrice'),
       width: 120,
       renderCell: (params) => (
         <Box sx={{ fontWeight: 'medium', color: 'text.secondary' }}>
@@ -195,7 +198,7 @@ export function ProductListView() {
     },
     {
       field: 'salePrice',
-      headerName: 'Sale Price',
+      headerName: t('table.salePrice'),
       width: 120,
       renderCell: (params) => (
         <Box sx={{ fontWeight: 'medium', color: 'primary.main' }}>
@@ -205,7 +208,7 @@ export function ProductListView() {
     },
     {
       field: 'profit',
-      headerName: 'Profit',
+      headerName: t('table.profit'),
       width: 100,
       renderCell: (params) => {
         const profit = (params.row.salePrice || 0) - (params.row.costPrice || 0);
@@ -221,7 +224,7 @@ export function ProductListView() {
     },
     {
       field: 'available',
-      headerName: 'Stock',
+      headerName: t('table.stock'),
       width: 110,
       renderCell: (params) => (
         <Box
@@ -237,7 +240,7 @@ export function ProductListView() {
     },
     {
       field: 'publish',
-      headerName: 'Publish',
+      headerName: t('table.publish'),
       width: 110,
       type: 'singleSelect',
       editable: true,
@@ -255,7 +258,7 @@ export function ProductListView() {
     },
     {
       field: 'createdAt',
-      headerName: 'Created At',
+      headerName: t('table.createdAt'),
       type: 'dateTime',
       width: 180,
       valueGetter: (params) => params.row?.createdAt ? new Date(params.row.createdAt) : null,
@@ -283,7 +286,7 @@ export function ProductListView() {
         <GridActionsCellItem
           showInMenu
           icon={<Iconify icon="solar:pen-bold" />}
-          label="Edit"
+          label={t('buttons.edit')}
           onClick={() => {
             // Navigate to edit
           }}
@@ -308,11 +311,11 @@ export function ProductListView() {
     <>
       <DashboardContent sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
         <CustomBreadcrumbs
-          heading="List"
+          heading={t('headers.productList')}
           links={[
-            { name: 'Dashboard', href: paths.dashboard.root },
-            { name: 'Product', href: paths.dashboard.product.root },
-            { name: 'List' },
+            { name: t('navigation.dashboard'), href: paths.dashboard.root },
+            { name: t('navigation.product'), href: paths.dashboard.product.root },
+            { name: t('navigation.list') },
           ]}
           action={
             <Button
@@ -321,7 +324,7 @@ export function ProductListView() {
               variant="contained"
               startIcon={<Iconify icon="mingcute:add-line" />}
             >
-              New product
+              {t('headers.newProduct')}
             </Button>
           }
           sx={{ mb: { xs: 3, md: 5 } }}

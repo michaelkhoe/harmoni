@@ -1,0 +1,12 @@
+{
+  "app": "Aplikasi",
+  "job": "Pekerjaan",
+  "user": "Pengguna",
+  "travel": "Perjalanan",
+  "invoice": "Faktur",
+  "blog": {
+    "title": "Blog",
+    "caption": "Pintasan keyboard khusus."
+  },
+  "subheader": "Sub judul"
+} 

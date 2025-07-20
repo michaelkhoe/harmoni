@@ -1,0 +1,142 @@
+{
+  "navigation": {
+    "dashboard": "Dashboard",
+    "product": "Product",
+    "category": "Category",
+    "list": "List",
+    "new": "New",
+    "edit": "Edit",
+    "details": "Details"
+  },
+  "buttons": {
+    "back": "Back",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "view": "View",
+    "create": "Create",
+    "search": "Search",
+    "filter": "Filter",
+    "export": "Export",
+    "import": "Import",
+    "download": "Download",
+    "copy": "Copy",
+    "regenerate": "Regenerate",
+    "publish": "Publish",
+    "draft": "Draft"
+  },
+  "headers": {
+    "productList": "Product List",
+    "newProduct": "New Product",
+    "editProduct": "Edit Product",
+    "productDetails": "Product Details",
+    "categoryList": "Category List",
+    "newCategory": "New Category",
+    "editCategory": "Edit Category"
+  },
+  "fields": {
+    "name": "Name",
+    "description": "Description",
+    "category": "Category",
+    "price": "Price",
+    "costPrice": "Cost Price",
+    "salePrice": "Sale Price",
+    "profit": "Profit",
+    "sku": "SKU",
+    "code": "Product Code",
+    "quantity": "Quantity",
+    "available": "Available",
+    "stock": "Stock",
+    "color": "Color",
+    "size": "Size",
+    "dimensions": "Dimensions",
+    "finish": "Finish",
+    "tags": "Tags",
+    "images": "Images",
+    "status": "Status",
+    "createdAt": "Created At",
+    "updatedAt": "Updated At"
+  },
+  "placeholders": {
+    "productName": "Enter product name",
+    "productCode": "Enter product code",
+    "sku": "Enter SKU",
+    "description": "Enter product description",
+    "color": "e.g., Matte Black, Aluminum, Natural Wood",
+    "size": "e.g., 15.6 inch, 120x80x75cm, 256GB, Large",
+    "costPrice": "0",
+    "salePrice": "0",
+    "quantity": "0",
+    "selectCategory": "Select Category"
+  },
+  "helpText": {
+    "costPrice": "Your base cost to acquire this product",
+    "salePrice": "Price you sell to customers (profit = sale price - cost price)",
+    "color": "Enter color, finish, material appearance, or pattern description",
+    "size": "Enter size, dimensions, capacity, or relevant specifications"
+  },
+  "status": {
+    "published": "Published",
+    "draft": "Draft",
+    "inStock": "In Stock",
+    "lowStock": "Low Stock",
+    "outOfStock": "Out of Stock"
+  },
+  "inventory": {
+    "inStock": "In Stock",
+    "lowStock": "Low Stock",
+    "outOfStock": "Out of Stock",
+    "available": "Available"
+  },
+  "qrCode": {
+    "title": "Product QR Code",
+    "generating": "Generating QR code...",
+    "generated": "QR code generated successfully!",
+    "id": "QR Code ID",
+    "download": "Download",
+    "copyId": "Copy ID",
+    "regenerate": "Regenerate",
+    "notGenerated": "QR code will be generated when the product is published",
+    "permanent": "This QR code was generated during product creation and is permanent for this product.",
+    "fillRequiredFields": "Please fill in Product Code and SKU, then change status to \"Published\" to generate QR code."
+  },
+  "messages": {
+    "productCreated": "Product created successfully!",
+    "productUpdated": "Product updated successfully!",
+    "productDeleted": "Product deleted successfully!",
+    "productsDeleted": "{count} products deleted successfully!",
+    "categoryCreated": "Category created successfully!",
+    "categoryUpdated": "Category updated successfully!",
+    "categoryDeleted": "Category deleted successfully!",
+    "qrCodeCopied": "QR code ID copied successfully!",
+    "saveError": "Failed to save product",
+    "deleteError": "Failed to delete product",
+    "qrCodeError": "Failed to generate QR code"
+  },
+  "confirmDialog": {
+    "deleteTitle": "Delete",
+    "deleteMessage": "Are you sure you want to delete {count} item(s)?",
+    "deleteConfirm": "Delete"
+  },
+  "table": {
+    "id": "ID",
+    "image": "Image",
+    "productName": "Product Name",
+    "category": "Category",
+    "costPrice": "Cost Price",
+    "salePrice": "Sale Price",
+    "profit": "Profit",
+    "stock": "Stock",
+    "publish": "Status",
+    "createdAt": "Created At",
+    "actions": "Actions",
+    "uncategorized": "Uncategorized"
+  },
+  "pricing": {
+    "costPrice": "Cost Price",
+    "salePrice": "Sale Price",
+    "profit": "Profit",
+    "currency": "$"
+  }
+} 

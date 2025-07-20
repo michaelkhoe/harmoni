@@ -1,0 +1,142 @@
+{
+  "navigation": {
+    "dashboard": "Dasbor",
+    "product": "Produk",
+    "category": "Kategori",
+    "list": "Daftar",
+    "new": "Baru",
+    "edit": "Edit",
+    "details": "Detail"
+  },
+  "buttons": {
+    "back": "Kembali",
+    "save": "Simpan",
+    "cancel": "Batal",
+    "delete": "Hapus",
+    "edit": "Edit",
+    "view": "Lihat",
+    "create": "Buat",
+    "search": "Cari",
+    "filter": "Filter",
+    "export": "Ekspor",
+    "import": "Impor",
+    "download": "Unduh",
+    "copy": "Salin",
+    "regenerate": "Buat Ulang",
+    "publish": "Terbitkan",
+    "draft": "Draf"
+  },
+  "headers": {
+    "productList": "Daftar Produk",
+    "newProduct": "Produk Baru",
+    "editProduct": "Edit Produk",
+    "productDetails": "Detail Produk",
+    "categoryList": "Daftar Kategori",
+    "newCategory": "Kategori Baru",
+    "editCategory": "Edit Kategori"
+  },
+  "fields": {
+    "name": "Nama",
+    "description": "Deskripsi",
+    "category": "Kategori",
+    "price": "Harga",
+    "costPrice": "Harga Modal",
+    "salePrice": "Harga Jual",
+    "profit": "Keuntungan",
+    "sku": "SKU",
+    "code": "Kode Produk",
+    "quantity": "Jumlah",
+    "available": "Tersedia",
+    "stock": "Stok",
+    "color": "Warna",
+    "size": "Ukuran",
+    "dimensions": "Dimensi",
+    "finish": "Finishing",
+    "tags": "Tag",
+    "images": "Gambar",
+    "status": "Status",
+    "createdAt": "Dibuat Pada",
+    "updatedAt": "Diperbarui Pada"
+  },
+  "placeholders": {
+    "productName": "Masukkan nama produk",
+    "productCode": "Masukkan kode produk",
+    "sku": "Masukkan SKU",
+    "description": "Masukkan deskripsi produk",
+    "color": "Contoh: Hitam Matte, Aluminium, Kayu Natural",
+    "size": "Contoh: 15,6 inci, 120x80x75cm, 256GB, Besar",
+    "costPrice": "0",
+    "salePrice": "0",
+    "quantity": "0",
+    "selectCategory": "Pilih Kategori"
+  },
+  "helpText": {
+    "costPrice": "Harga dasar Anda untuk memperoleh produk ini",
+    "salePrice": "Harga yang Anda jual ke pelanggan (keuntungan = harga jual - harga modal)",
+    "color": "Masukkan warna, finishing, tampilan material, atau deskripsi pola",
+    "size": "Masukkan ukuran, dimensi, kapasitas, atau spesifikasi yang relevan"
+  },
+  "status": {
+    "published": "Diterbitkan",
+    "draft": "Draf",
+    "inStock": "Tersedia",
+    "lowStock": "Stok Menipis",
+    "outOfStock": "Habis"
+  },
+  "inventory": {
+    "inStock": "Tersedia",
+    "lowStock": "Stok Menipis",
+    "outOfStock": "Habis",
+    "available": "Tersedia"
+  },
+  "qrCode": {
+    "title": "QR Code Produk",
+    "generating": "Membuat QR code...",
+    "generated": "QR code berhasil dibuat!",
+    "id": "ID QR Code",
+    "download": "Unduh",
+    "copyId": "Salin ID",
+    "regenerate": "Buat Ulang",
+    "notGenerated": "QR code akan dibuat saat produk diterbitkan",
+    "permanent": "QR code ini dibuat saat pembuatan produk dan bersifat permanen untuk produk ini.",
+    "fillRequiredFields": "Pastikan mengisi Kode Produk dan SKU, lalu ubah status ke \"Diterbitkan\" untuk membuat QR code."
+  },
+  "messages": {
+    "productCreated": "Produk berhasil dibuat!",
+    "productUpdated": "Produk berhasil diperbarui!",
+    "productDeleted": "Produk berhasil dihapus!",
+    "productsDeleted": "{count} produk berhasil dihapus!",
+    "categoryCreated": "Kategori berhasil dibuat!",
+    "categoryUpdated": "Kategori berhasil diperbarui!",
+    "categoryDeleted": "Kategori berhasil dihapus!",
+    "qrCodeCopied": "ID QR code berhasil disalin!",
+    "saveError": "Gagal menyimpan produk",
+    "deleteError": "Gagal menghapus produk",
+    "qrCodeError": "Gagal membuat QR code"
+  },
+  "confirmDialog": {
+    "deleteTitle": "Hapus",
+    "deleteMessage": "Apakah Anda yakin ingin menghapus {count} item?",
+    "deleteConfirm": "Hapus"
+  },
+  "table": {
+    "id": "ID",
+    "image": "Gambar",
+    "productName": "Nama Produk",
+    "category": "Kategori",
+    "costPrice": "Harga Modal",
+    "salePrice": "Harga Jual",
+    "profit": "Keuntungan",
+    "stock": "Stok",
+    "publish": "Status",
+    "createdAt": "Dibuat Pada",
+    "actions": "Aksi",
+    "uncategorized": "Tanpa Kategori"
+  },
+  "pricing": {
+    "costPrice": "Harga Modal",
+    "salePrice": "Harga Jual",
+    "profit": "Keuntungan",
+    "currency": "Rp"
+  }
+} 
