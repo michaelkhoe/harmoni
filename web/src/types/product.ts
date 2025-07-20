@@ -4,7 +4,6 @@ import type { IDateValue } from './common';
 
 export type IProductFilters = {
   rating: string;
-  gender: string[];
   category: string;
   colors: string[];
   priceRange: number[];
@@ -33,15 +32,15 @@ export type IProductItem = {
   sku: string;
   name: string;
   code: string;
-  price: number;
+  costPrice: number;
+  salePrice: number;
   taxes: number;
   tags: string[];
-  sizes: string[];
+  size: string;
   publish: string;
-  gender: string[];
   coverUrl: string;
   images: string[];
-  colors: string[];
+  color: string;
   quantity: number;
   category: string;
   available: number;
@@ -52,16 +51,7 @@ export type IProductItem = {
   createdAt: IDateValue;
   inventoryType: string;
   subDescription: string;
-  priceSale: number | null;
   reviews: IProductReview[];
-  newLabel: {
-    content: string;
-    enabled: boolean;
-  };
-  saleLabel: {
-    content: string;
-    enabled: boolean;
-  };
   ratings: {
     name: string;
     starCount: number;

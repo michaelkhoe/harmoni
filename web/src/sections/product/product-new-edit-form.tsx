@@ -24,9 +24,6 @@ import { productMockAPI } from 'src/actions/product-mock';
 import { useGetCategories } from 'src/actions/category-mock';
 import {
   _tags,
-  PRODUCT_SIZE_OPTIONS,
-  PRODUCT_GENDER_OPTIONS,
-  PRODUCT_COLOR_NAME_OPTIONS,
 } from 'src/_mock';
 
 import { toast } from 'src/components/snackbar';
@@ -51,22 +48,24 @@ export const NewProductSchema = zod.object({
       message: 'Quantity is required!',
     }
   ),
-  colors: zod.string().array().min(1, { message: 'Choose at least one option!' }),
-  sizes: zod.string().array().min(1, { message: 'Choose at least one option!' }),
+  color: zod.string().min(1, { message: 'Color is required!' }),
+  size: zod.string().min(1, { message: 'Size is required!' }),
   tags: zod.string().array().min(2, { message: 'Must have at least 2 items!' }),
-  gender: zod.array(zod.string()).min(1, { message: 'Choose at least one option!' }),
-  price: schemaHelper.nullableInput(
-    zod.number({ coerce: true }).min(1, { message: 'Price is required!' }),
+  costPrice: schemaHelper.nullableInput(
+    zod.number({ coerce: true }).min(1, { message: 'Cost price is required!' }),
     {
-      message: 'Price is required!',
+      message: 'Cost price is required!',
+    }
+  ),
+  salePrice: schemaHelper.nullableInput(
+    zod.number({ coerce: true }).min(1, { message: 'Sale price is required!' }),
+    {
+      message: 'Sale price is required!',
     }
   ),
   category: zod.string().min(1, { message: 'Category is required!' }),
   subDescription: zod.string(),
   taxes: zod.number({ coerce: true }).nullable(),
-  priceSale: zod.number({ coerce: true }).nullable(),
-  saleLabel: zod.object({ enabled: zod.boolean(), content: zod.string() }),
-  newLabel: zod.object({ enabled: zod.boolean(), content: zod.string() }),
 });
 
 // ----------------------------------------------------------------------
@@ -89,17 +88,14 @@ export function ProductNewEditForm({ currentProduct }: Props) {
     /********/
     code: '',
     sku: '',
-    price: null,
+    costPrice: null,
+    salePrice: null,
     taxes: null,
-    priceSale: null,
     quantity: null,
     tags: [],
-    gender: [],
     category: categories?.[0]?.name || '',
-    colors: [],
-    sizes: [],
-    newLabel: { enabled: false, content: '' },
-    saleLabel: { enabled: false, content: '' },
+    color: '',
+    size: '',
   }), [categories]);
 
   const methods = useForm<NewProductSchemaType>({
@@ -131,7 +127,8 @@ export function ProductNewEditForm({ currentProduct }: Props) {
         ...data,
         images: processedImages as string[],
         coverUrl: (processedImages && processedImages.length > 0 ? processedImages[0] : '') as string,
-        price: data.price || 0,
+        costPrice: data.costPrice || 0,
+        salePrice: data.salePrice || 0,
         quantity: data.quantity || 0,
         taxes: data.taxes || 0,
       };
@@ -250,14 +247,19 @@ export function ProductNewEditForm({ currentProduct }: Props) {
             ))}
           </Field.Select>
 
-          <Field.MultiSelect
-            checkbox
-            name="colors"
-            label="Colors"
-            options={PRODUCT_COLOR_NAME_OPTIONS}
+          <Field.Text 
+            name="color" 
+            label="Color/Finish" 
+            placeholder="e.g., Matte Black, Brushed Aluminum, Wood Grain, Gradient Blue"
+            helperText="Enter color, finish, material appearance, or pattern description"
           />
 
-          <Field.MultiSelect checkbox name="sizes" label="Sizes" options={PRODUCT_SIZE_OPTIONS} />
+          <Field.Text 
+            name="size" 
+            label="Size/Dimensions" 
+            placeholder="e.g., 15.6-inch, 120x80x75cm, 256GB, Large"
+            helperText="Enter size, dimensions, capacity, or any relevant specifications"
+          />
         </Box>
 
         <Field.Autocomplete
@@ -288,30 +290,7 @@ export function ProductNewEditForm({ currentProduct }: Props) {
           }
         />
 
-        <Stack spacing={1}>
-          <Typography variant="subtitle2">Gender</Typography>
-          <Field.MultiCheckbox row name="gender" options={PRODUCT_GENDER_OPTIONS} sx={{ gap: 2 }} />
-        </Stack>
 
-        <Divider sx={{ borderStyle: 'dashed' }} />
-
-        <Box sx={{ gap: 3, display: 'flex', alignItems: 'center' }}>
-          <Field.Switch name="saleLabel.enabled" label={null} sx={{ m: 0 }} />
-          <Field.Text
-            name="saleLabel.content"
-            label="Sale label"
-            fullWidth
-          />
-        </Box>
-
-        <Box sx={{ gap: 3, display: 'flex', alignItems: 'center' }}>
-          <Field.Switch name="newLabel.enabled" label={null} sx={{ m: 0 }} />
-          <Field.Text
-            name="newLabel.content"
-            label="New label"
-            fullWidth
-          />
-        </Box>
       </Stack>
     </Card>
   );
@@ -324,10 +303,11 @@ export function ProductNewEditForm({ currentProduct }: Props) {
 
       <Stack spacing={3} sx={{ p: 3 }}>
         <Field.Text
-          name="price"
-          label="Regular price"
+          name="costPrice"
+          label="Cost Price"
           placeholder="0.00"
           type="number"
+          helperText="Your base cost to acquire this product (harga modal)"
           slotProps={{
             inputLabel: { shrink: true },
             input: {
@@ -343,10 +323,11 @@ export function ProductNewEditForm({ currentProduct }: Props) {
         />
 
         <Field.Text
-          name="priceSale"
-          label="Sale price"
+          name="salePrice"
+          label="Sale Price"
           placeholder="0.00"
           type="number"
+          helperText="The price you sell to customers (profit = sale price - cost price)"
           slotProps={{
             inputLabel: { shrink: true },
             input: {

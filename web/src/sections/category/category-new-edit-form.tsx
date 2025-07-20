@@ -2,8 +2,8 @@ import type { ICategoryItem } from 'src/types/category';
 
 import { z as zod } from 'zod';
 import { useForm } from 'react-hook-form';
-import { useState, useCallback } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useState, useCallback, useEffect } from 'react';
 
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
@@ -67,6 +67,7 @@ export function CategoryNewEditForm({ currentCategory }: Props) {
     setValue,
     getValues,
     handleSubmit,
+    watch,
     formState: { isSubmitting },
   } = methods;
 
@@ -110,14 +111,18 @@ export function CategoryNewEditForm({ currentCategory }: Props) {
     }
   });
 
-  // Generate slug from name when name changes
-  const handleNameChange = useCallback((name: string) => {
-    const slug = name
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, '-')
-      .replace(/(^-|-$)/g, '');
-    setValue('slug', slug);
-  }, [setValue]);
+  // Watch for name changes and auto-generate slug
+  const watchedName = watch('name');
+  
+  useEffect(() => {
+    if (watchedName) {
+      const slug = watchedName
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/(^-|-$)/g, '');
+      setValue('slug', slug);
+    }
+  }, [watchedName, setValue]);
 
   const renderDetails = () => (
     <Card>
@@ -127,7 +132,6 @@ export function CategoryNewEditForm({ currentCategory }: Props) {
         <Field.Text 
           name="name" 
           label="Category name"
-          onChange={(event) => handleNameChange(event.target.value)}
         />
 
         <Stack spacing={1.5}>

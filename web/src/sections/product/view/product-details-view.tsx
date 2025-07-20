@@ -67,6 +67,52 @@ export function ProductDetailsView({ product }: Props) {
     setPublish(newValue);
   }, []);
 
+  // Handle case when product is not found
+  if (!product) {
+    return (
+      <DashboardContent>
+        <Box
+          sx={{
+            py: 12,
+            maxWidth: 480,
+            mx: 'auto',
+            display: 'flex',
+            minHeight: '100vh',
+            textAlign: 'center',
+            alignItems: 'center',
+            flexDirection: 'column',
+            justifyContent: 'center',
+          }}
+        >
+          <Typography variant="h3" sx={{ mb: 3 }}>
+            Product Not Found
+          </Typography>
+          
+          <Typography sx={{ color: 'text.secondary', mb: 5 }}>
+            The product you&apos;re looking for doesn&apos;t exist or may have been removed.
+          </Typography>
+
+          <Box
+            sx={{
+              width: 260,
+              height: 200,
+              backgroundColor: 'grey.200',
+              borderRadius: 2,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              my: { xs: 5, sm: 10 },
+            }}
+          >
+            <Typography variant="h1" sx={{ color: 'grey.400', fontSize: '4rem' }}>
+              404
+            </Typography>
+          </Box>
+        </Box>
+      </DashboardContent>
+    );
+  }
+
   return (
     <DashboardContent>
       <ProductDetailsToolbar

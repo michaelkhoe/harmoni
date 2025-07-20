@@ -184,27 +184,40 @@ export function ProductListView() {
       ),
     },
     {
-      field: 'price',
-      headerName: 'Price',
+      field: 'costPrice',
+      headerName: 'Cost Price',
       width: 120,
       renderCell: (params) => (
-        <Box sx={{ fontWeight: 'medium' }}>
-          ${params.row.price?.toFixed(2) || '0.00'}
+        <Box sx={{ fontWeight: 'medium', color: 'text.secondary' }}>
+          ${params.row.costPrice?.toFixed(2) || '0.00'}
         </Box>
       ),
     },
     {
-      field: 'priceSale',
+      field: 'salePrice',
       headerName: 'Sale Price',
       width: 120,
       renderCell: (params) => (
-        <Box sx={{ 
-          fontWeight: 'medium',
-          color: params.row.priceSale ? 'error.main' : 'text.disabled'
-        }}>
-          {params.row.priceSale ? `$${params.row.priceSale.toFixed(2)}` : '-'}
+        <Box sx={{ fontWeight: 'medium', color: 'primary.main' }}>
+          ${params.row.salePrice?.toFixed(2) || '0.00'}
         </Box>
       ),
+    },
+    {
+      field: 'profit',
+      headerName: 'Profit',
+      width: 100,
+      renderCell: (params) => {
+        const profit = (params.row.salePrice || 0) - (params.row.costPrice || 0);
+        return (
+          <Box sx={{ 
+            fontWeight: 'medium',
+            color: profit > 0 ? 'success.main' : 'error.main'
+          }}>
+            ${profit.toFixed(2)}
+          </Box>
+        );
+      },
     },
     {
       field: 'available',

@@ -1,10 +1,7 @@
-export const PRODUCT_GENDER_OPTIONS = [
-  { label: 'Men', value: 'Men' },
-  { label: 'Women', value: 'Women' },
-  { label: 'Kids', value: 'Kids' },
-];
+// Gender options removed - not applicable for electronics and furniture
+export const PRODUCT_GENDER_OPTIONS: never[] = [];
 
-export const PRODUCT_CATEGORY_OPTIONS = ['Shose', 'Apparel', 'Accessories'];
+export const PRODUCT_CATEGORY_OPTIONS = ['Electronics', 'Home & Garden', 'Books'];
 
 export const PRODUCT_RATING_OPTIONS = ['up4Star', 'up3Star', 'up2Star', 'up1Star'];
 
@@ -31,17 +28,30 @@ export const PRODUCT_COLOR_NAME_OPTIONS = [
 ];
 
 export const PRODUCT_SIZE_OPTIONS = [
-  { value: '7', label: '7' },
-  { value: '8', label: '8' },
-  { value: '8.5', label: '8.5' },
-  { value: '9', label: '9' },
-  { value: '9.5', label: '9.5' },
-  { value: '10', label: '10' },
-  { value: '10.5', label: '10.5' },
-  { value: '11', label: '11' },
-  { value: '11.5', label: '11.5' },
-  { value: '12', label: '12' },
-  { value: '13', label: '13' },
+  // Electronics
+  { value: '32GB', label: '32GB' },
+  { value: '64GB', label: '64GB' },
+  { value: '128GB', label: '128GB' },
+  { value: '256GB', label: '256GB' },
+  { value: '512GB', label: '512GB' },
+  { value: '1TB', label: '1TB' },
+  // Screens
+  { value: '13-inch', label: '13-inch' },
+  { value: '15-inch', label: '15-inch' },
+  { value: '16-inch', label: '16-inch' },
+  { value: '24-inch', label: '24-inch' },
+  { value: '27-inch', label: '27-inch' },
+  { value: '32-inch', label: '32-inch' },
+  // Furniture sizes
+  { value: 'Small', label: 'Small' },
+  { value: 'Medium', label: 'Medium' },
+  { value: 'Large', label: 'Large' },
+  { value: 'Extra Large', label: 'Extra Large' },
+  // Specific furniture dimensions
+  { value: '2-seater', label: '2-seater' },
+  { value: '4-seater', label: '4-seater' },
+  { value: '6-seater', label: '6-seater' },
+  { value: '8-seater', label: '8-seater' },
 ];
 
 export const PRODUCT_STOCK_OPTIONS = [
@@ -63,7 +73,7 @@ export const PRODUCT_SORT_OPTIONS = [
 ];
 
 export const PRODUCT_CATEGORY_GROUP_OPTIONS = [
-  { group: 'Clothing', classify: ['Shirts', 'T-shirts', 'Jeans', 'Leather', 'Accessories'] },
-  { group: 'Tailored', classify: ['Suits', 'Blazers', 'Trousers', 'Waistcoats', 'Apparel'] },
-  { group: 'Accessories', classify: ['Shoes', 'Backpacks and bags', 'Bracelets', 'Face masks'] },
+  { group: 'Electronics', classify: ['Smartphones', 'Laptops', 'Tablets', 'Monitors', 'Accessories'] },
+  { group: 'Home & Garden', classify: ['Furniture', 'Decor', 'Kitchen', 'Bedroom', 'Living Room'] },
+  { group: 'Books', classify: ['Fiction', 'Non-Fiction', 'Technical', 'Educational', 'Reference'] },
 ];

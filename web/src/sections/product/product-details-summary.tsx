@@ -19,10 +19,8 @@ import { useRouter } from 'src/routes/hooks';
 
 import { fCurrency, fShortenNumber } from 'src/utils/format-number';
 
-import { Label } from 'src/components/label';
 import { Iconify } from 'src/components/iconify';
 import { Form, Field } from 'src/components/hook-form';
-import { ColorPicker } from 'src/components/color-utils';
 import { NumberInput } from 'src/components/number-input';
 
 // ----------------------------------------------------------------------
@@ -46,14 +44,12 @@ export function ProductDetailsSummary({
   const {
     id,
     name,
-    sizes,
-    price,
-    colors,
+    size: productSize,
+    costPrice,
+    salePrice,
+    color: productColor,
     coverUrl,
-    newLabel,
     available,
-    priceSale,
-    saleLabel,
     totalRatings,
     totalReviews,
     inventoryType,
@@ -76,11 +72,11 @@ export function ProductDetailsSummary({
     name,
     coverUrl,
     available,
-    price,
-    colors: colors?.[0] || '',
-    size: sizes?.[4] || '',
+    price: salePrice,
+    colors: productColor || '',
+    size: productSize || '',
     quantity: available < 1 ? 0 : 1,
-  }), [id, name, coverUrl, available, price, colors?.[0], sizes?.[4]]);
+  }), [id, name, coverUrl, available, salePrice, productColor, productSize]);
 
   const methods = useForm<typeof defaultValues>({
     defaultValues,
@@ -115,17 +111,17 @@ export function ProductDetailsSummary({
   }, [onAddToCart, methods]);
 
   const renderPrice = () => (
-    <Box sx={{ typography: 'h5' }}>
-      {priceSale && (
-        <Box
-          component="span"
-          sx={{ color: 'text.disabled', textDecoration: 'line-through', mr: 0.5 }}
-        >
-          {fCurrency(priceSale)}
-        </Box>
-      )}
-
-      {fCurrency(price)}
+    <Box>
+      <Box sx={{ typography: 'h5', color: 'primary.main' }}>
+        {fCurrency(salePrice)}
+      </Box>
+      <Box sx={{ 
+        typography: 'body2', 
+        color: 'text.secondary',
+        mt: 0.5
+      }}>
+        Cost: {fCurrency(costPrice)} • Profit: {fCurrency(salePrice - costPrice)}
+      </Box>
     </Box>
   );
 
@@ -167,18 +163,21 @@ export function ProductDetailsSummary({
         Color
       </Typography>
 
-      <Controller
-        name="colors"
-        control={control}
-        render={({ field }) => (
-          <ColorPicker
-            options={colors}
-            value={field.value}
-            onChange={(color) => field.onChange(color as string)}
-            limit={4}
-          />
-        )}
-      />
+      <Typography 
+        variant="body2" 
+        sx={{ 
+          p: 1.5, 
+          color: 'text.secondary',
+          backgroundColor: 'grey.50',
+          borderRadius: 1,
+          minHeight: 40,
+          display: 'flex',
+          alignItems: 'center',
+          maxWidth: 200
+        }}
+      >
+        {productColor || 'Color not specified'}
+      </Typography>
     </Box>
   );
 
@@ -188,25 +187,23 @@ export function ProductDetailsSummary({
         Size
       </Typography>
 
-      <Field.Select
-        name="size"
-        size="small"
-        helperText={
-          <Link underline="always" color="text.primary">
-            Size chart
-          </Link>
-        }
-        sx={{
-          maxWidth: 88,
-          [`& .${formHelperTextClasses.root}`]: { mx: 0, mt: 1, textAlign: 'right' },
-        }}
-      >
-        {sizes.map((size) => (
-          <MenuItem key={size} value={size}>
-            {size}
-          </MenuItem>
-        ))}
-      </Field.Select>
+      <Box>
+        <Typography 
+          variant="body2" 
+          sx={{ 
+            p: 1.5, 
+            color: 'text.secondary',
+            backgroundColor: 'grey.50',
+            borderRadius: 1,
+            minHeight: 40,
+            display: 'flex',
+            alignItems: 'center',
+            maxWidth: 200
+          }}
+        >
+          {productSize || 'Size not specified'}
+        </Typography>
+      </Box>
     </Box>
   );
 
@@ -276,13 +273,7 @@ export function ProductDetailsSummary({
     </Box>
   );
 
-  const renderLabels = () =>
-    (newLabel.enabled || saleLabel.enabled) && (
-      <Box sx={{ gap: 1, display: 'flex', alignItems: 'center' }}>
-        {newLabel.enabled && <Label color="info">{newLabel.content}</Label>}
-        {saleLabel.enabled && <Label color="error">{saleLabel.content}</Label>}
-      </Box>
-    );
+
 
   const renderInventoryType = () => (
     <Box
@@ -303,7 +294,6 @@ export function ProductDetailsSummary({
     <Form methods={methods} onSubmit={onSubmit}>
       <Stack spacing={3} sx={{ pt: 3 }} {...other}>
         <Stack spacing={2} alignItems="flex-start">
-          {renderLabels()}
           {renderInventoryType()}
 
           <Typography variant="h5">{name}</Typography>

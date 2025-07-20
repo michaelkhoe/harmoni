@@ -11,10 +11,8 @@ import { RouterLink } from 'src/routes/components';
 
 import { fCurrency } from 'src/utils/format-number';
 
-import { Label } from 'src/components/label';
 import { Image } from 'src/components/image';
 import { Iconify } from 'src/components/iconify';
-import { ColorPreview } from 'src/components/color-utils';
 
 import { useCheckoutContext } from '../checkout/context';
 
@@ -28,7 +26,7 @@ type Props = {
 export function ProductItem({ product, detailsHref }: Props) {
   const { onAddToCart } = useCheckoutContext();
 
-  const { id, name, coverUrl, price, colors, available, sizes, priceSale, newLabel, saleLabel } =
+  const { id, name, coverUrl, costPrice, salePrice, color, available, size } =
     product;
 
   const handleAddCart = async () => {
@@ -37,9 +35,9 @@ export function ProductItem({ product, detailsHref }: Props) {
       name,
       coverUrl,
       available,
-      price,
-      colors: [colors[0]],
-      size: sizes[0],
+      price: salePrice,
+      colors: [color],
+      size: size,
       quantity: 1,
     };
     try {
@@ -49,31 +47,7 @@ export function ProductItem({ product, detailsHref }: Props) {
     }
   };
 
-  const renderLabels = () =>
-    (newLabel.enabled || saleLabel.enabled) && (
-      <Box
-        sx={{
-          gap: 1,
-          top: 16,
-          zIndex: 9,
-          right: 16,
-          display: 'flex',
-          position: 'absolute',
-          alignItems: 'center',
-        }}
-      >
-        {newLabel.enabled && (
-          <Label variant="filled" color="info">
-            {newLabel.content}
-          </Label>
-        )}
-        {saleLabel.enabled && (
-          <Label variant="filled" color="error">
-            {saleLabel.content}
-          </Label>
-        )}
-      </Box>
-    );
+
 
   const renderImage = () => (
     <Box sx={{ position: 'relative', p: 1 }}>
@@ -119,18 +93,22 @@ export function ProductItem({ product, detailsHref }: Props) {
       </Link>
 
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <Tooltip title="Color">
-          <ColorPreview colors={colors} />
-        </Tooltip>
+        <Box sx={{ 
+          fontSize: '0.875rem', 
+          color: 'text.secondary',
+          maxWidth: 120,
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          whiteSpace: 'nowrap'
+        }}>
+          {color}
+        </Box>
 
         <Box sx={{ gap: 0.5, display: 'flex', typography: 'subtitle1' }}>
-          {priceSale && (
-            <Box component="span" sx={{ color: 'text.disabled', textDecoration: 'line-through' }}>
-              {fCurrency(priceSale)}
-            </Box>
-          )}
-
-          <Box component="span">{fCurrency(price)}</Box>
+          <Box component="span">{fCurrency(salePrice)}</Box>
+          <Box component="span" sx={{ color: 'text.disabled', fontSize: '0.875rem' }}>
+            (Cost: {fCurrency(costPrice)})
+          </Box>
         </Box>
       </Box>
     </Stack>
@@ -144,7 +122,6 @@ export function ProductItem({ product, detailsHref }: Props) {
         },
       }}
     >
-      {renderLabels()}
       {renderImage()}
       {renderContent()}
     </Card>
